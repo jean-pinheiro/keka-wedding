@@ -88,48 +88,99 @@ export function AdminDashboard({ initialData }: AdminDashboardProps) {
   };
 
   const saveGift = async (gift: Partial<Gift>) => {
-    // In a real implementation, this would make API calls to update the database
-    console.log("Saving gift:", gift);
-    // For now, just update local state
-    if (gift.id) {
-      setGifts(gifts.map((g) => (g.id === gift.id ? { ...g, ...gift } : g)));
-    } else {
-      const newGiftWithId = { ...gift, id: Date.now().toString() } as Gift;
-      setGifts([...gifts, newGiftWithId]);
-    }
-    setEditingGift(null);
-    setNewGift({});
-  };
+    try {
+      const res = await fetch("/api/admin/gifts/upsert", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(gift),
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error || "Erro ao salvar presente");
 
-  const deleteGift = async (id: string) => {
-    if (confirm("Are you sure you want to delete this gift?")) {
-      setGifts(gifts.filter((g) => g.id !== id));
+      const saved: Gift = json.gift;
+      setGifts((prev) => {
+        const i = prev.findIndex((g) => g.id === saved.id);
+        if (i >= 0) {
+          const copy = [...prev];
+          copy[i] = saved;
+          return copy;
+        }
+        return [saved, ...prev];
+      });
+      setEditingGift(null);
+      setNewGift({});
+    } catch (e: any) {
+      alert(e.message || "Falha ao salvar presente");
     }
   };
 
   const savePhoto = async (photo: Partial<Photo>) => {
-    console.log("Saving photo:", photo);
-    if (photo.id) {
-      setPhotos(
-        photos.map((p) => (p.id === photo.id ? { ...p, ...photo } : p))
-      );
-    } else {
-      const newPhotoWithId = { ...photo, id: Date.now().toString() } as Photo;
-      setPhotos([...photos, newPhotoWithId]);
-    }
-    setEditingPhoto(null);
-    setNewPhoto({});
-  };
+    try {
+      const res = await fetch("/api/admin/photos/upsert", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(photo),
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error || "Erro ao salvar foto");
 
-  const deletePhoto = async (id: string) => {
-    if (confirm("Are you sure you want to delete this photo?")) {
-      setPhotos(photos.filter((p) => p.id !== id));
+      const saved: Photo = json.photo;
+      setPhotos((prev) => {
+        const i = prev.findIndex((p) => p.id === saved.id);
+        if (i >= 0) {
+          const copy = [...prev];
+          copy[i] = saved;
+          return copy;
+        }
+        return [saved, ...prev];
+      });
+      setEditingPhoto(null);
+      setNewPhoto({});
+    } catch (e: any) {
+      alert(e.message || "Falha ao salvar foto");
     }
   };
 
   const saveSettings = async () => {
-    console.log("Saving settings:", settings);
-    // In a real implementation, this would make an API call
+    try {
+      const res = await fetch("/api/admin/settings/upsert", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(settings),
+      });
+      const json = await res.json();
+      if (!res.ok)
+        throw new Error(json.error || "Erro ao salvar configurações");
+
+      setSettings(json.settings || settings);
+      // optional: toast success
+    } catch (e: any) {
+      alert(e.message || "Falha ao salvar configurações");
+    }
+  };
+
+  const deleteGift = async (id: string) => {
+    if (!confirm("Excluir este presente?")) return;
+    const res = await fetch("/api/admin/gifts/delete", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id }),
+    });
+    const json = await res.json();
+    if (!res.ok) return alert(json.error || "Falha ao excluir");
+    setGifts(gifts.filter((g) => g.id !== id));
+  };
+
+  const deletePhoto = async (id: string) => {
+    if (!confirm("Excluir esta foto?")) return;
+    const res = await fetch("/api/admin/photos/delete", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id }),
+    });
+    const json = await res.json();
+    if (!res.ok) return alert(json.error || "Falha ao excluir");
+    setPhotos(photos.filter((p) => p.id !== id));
   };
 
   return (
