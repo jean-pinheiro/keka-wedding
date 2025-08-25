@@ -1,121 +1,136 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Label } from "@/components/ui/label"
-import { Badge } from "@/components/ui/badge"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Trash2, Edit, Plus, Save, X } from "lucide-react"
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Trash2, Edit, Plus, Save, X } from "lucide-react";
+import { ImageUploader } from "@/src/components/ImageUploader";
 
 interface Gift {
-  id: string
-  name: string
-  description?: string
-  image_url?: string
-  status: "available" | "reserved" | "paid"
-  reserved_by_name?: string
-  reserved_by_email?: string
-  pix_qr_url?: string
-  pix_link_url?: string
-  paid_at?: string
+  id: string;
+  name: string;
+  description?: string;
+  image_url?: string;
+  status: "available" | "reserved" | "paid";
+  reserved_by_name?: string;
+  reserved_by_email?: string;
+  pix_qr_url?: string;
+  pix_link_url?: string;
+  paid_at?: string;
 }
 
 interface Photo {
-  id: string
-  image_url: string
-  caption?: string
-  sort_order: number
+  id: string;
+  image_url: string;
+  caption?: string;
+  sort_order: number;
 }
 
 interface RSVP {
-  id: string
-  name: string
-  email?: string
-  attending: boolean
-  message?: string
-  created_at: string
+  id: string;
+  name: string;
+  email?: string;
+  attending: boolean;
+  message?: string;
+  created_at: string;
 }
 
 interface SiteSettings {
-  id?: string
-  location_address?: string
-  maps_embed_url?: string
-  cover_title?: string
-  cover_subtitle?: string
-  pix_qr_url?: string
-  pix_link_url?: string
-  pix_instructions?: string
+  id?: string;
+  location_address?: string;
+  maps_embed_url?: string;
+  cover_title?: string;
+  cover_subtitle?: string;
+  pix_qr_url?: string;
+  pix_link_url?: string;
+  pix_instructions?: string;
 }
 
 interface AdminDashboardProps {
   initialData: {
-    gifts: Gift[]
-    photos: Photo[]
-    rsvps: RSVP[]
-    settings: SiteSettings | null
-  }
+    gifts: Gift[];
+    photos: Photo[];
+    rsvps: RSVP[];
+    settings: SiteSettings | null;
+  };
 }
 
 export function AdminDashboard({ initialData }: AdminDashboardProps) {
-  const [gifts, setGifts] = useState(initialData.gifts)
-  const [photos, setPhotos] = useState(initialData.photos)
-  const [settings, setSettings] = useState(initialData.settings || {})
-  const [editingGift, setEditingGift] = useState<Gift | null>(null)
-  const [editingPhoto, setEditingPhoto] = useState<Photo | null>(null)
-  const [newGift, setNewGift] = useState<Partial<Gift>>({})
-  const [newPhoto, setNewPhoto] = useState<Partial<Photo>>({})
+  const [gifts, setGifts] = useState(initialData.gifts);
+  const [photos, setPhotos] = useState(initialData.photos);
+  const [settings, setSettings] = useState(initialData.settings || {});
+  const [editingGift, setEditingGift] = useState<Gift | null>(null);
+  const [editingPhoto, setEditingPhoto] = useState<Photo | null>(null);
+  const [newGift, setNewGift] = useState<Partial<Gift>>({});
+  const [newPhoto, setNewPhoto] = useState<Partial<Photo>>({});
 
   const handleLogout = () => {
-    document.cookie = "admin=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
-    window.location.reload()
-  }
+    document.cookie = "admin=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    window.location.reload();
+  };
 
   const saveGift = async (gift: Partial<Gift>) => {
     // In a real implementation, this would make API calls to update the database
-    console.log("Saving gift:", gift)
+    console.log("Saving gift:", gift);
     // For now, just update local state
     if (gift.id) {
-      setGifts(gifts.map((g) => (g.id === gift.id ? { ...g, ...gift } : g)))
+      setGifts(gifts.map((g) => (g.id === gift.id ? { ...g, ...gift } : g)));
     } else {
-      const newGiftWithId = { ...gift, id: Date.now().toString() } as Gift
-      setGifts([...gifts, newGiftWithId])
+      const newGiftWithId = { ...gift, id: Date.now().toString() } as Gift;
+      setGifts([...gifts, newGiftWithId]);
     }
-    setEditingGift(null)
-    setNewGift({})
-  }
+    setEditingGift(null);
+    setNewGift({});
+  };
 
   const deleteGift = async (id: string) => {
     if (confirm("Are you sure you want to delete this gift?")) {
-      setGifts(gifts.filter((g) => g.id !== id))
+      setGifts(gifts.filter((g) => g.id !== id));
     }
-  }
+  };
 
   const savePhoto = async (photo: Partial<Photo>) => {
-    console.log("Saving photo:", photo)
+    console.log("Saving photo:", photo);
     if (photo.id) {
-      setPhotos(photos.map((p) => (p.id === photo.id ? { ...p, ...photo } : p)))
+      setPhotos(
+        photos.map((p) => (p.id === photo.id ? { ...p, ...photo } : p))
+      );
     } else {
-      const newPhotoWithId = { ...photo, id: Date.now().toString() } as Photo
-      setPhotos([...photos, newPhotoWithId])
+      const newPhotoWithId = { ...photo, id: Date.now().toString() } as Photo;
+      setPhotos([...photos, newPhotoWithId]);
     }
-    setEditingPhoto(null)
-    setNewPhoto({})
-  }
+    setEditingPhoto(null);
+    setNewPhoto({});
+  };
 
   const deletePhoto = async (id: string) => {
     if (confirm("Are you sure you want to delete this photo?")) {
-      setPhotos(photos.filter((p) => p.id !== id))
+      setPhotos(photos.filter((p) => p.id !== id));
     }
-  }
+  };
 
   const saveSettings = async () => {
-    console.log("Saving settings:", settings)
+    console.log("Saving settings:", settings);
     // In a real implementation, this would make an API call
-  }
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -138,7 +153,9 @@ export function AdminDashboard({ initialData }: AdminDashboardProps) {
           <TabsContent value="gifts" className="space-y-6">
             <div className="flex justify-between items-center">
               <h2 className="text-2xl font-semibold">Manage Gifts</h2>
-              <Button onClick={() => setNewGift({ name: "", status: "available" })}>
+              <Button
+                onClick={() => setNewGift({ name: "", status: "available" })}
+              >
                 <Plus className="mr-2 h-4 w-4" />
                 Add Gift
               </Button>
@@ -147,7 +164,9 @@ export function AdminDashboard({ initialData }: AdminDashboardProps) {
             {(newGift.name !== undefined || editingGift) && (
               <Card>
                 <CardHeader>
-                  <CardTitle>{editingGift ? "Edit Gift" : "Add New Gift"}</CardTitle>
+                  <CardTitle>
+                    {editingGift ? "Edit Gift" : "Add New Gift"}
+                  </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
@@ -157,7 +176,10 @@ export function AdminDashboard({ initialData }: AdminDashboardProps) {
                         value={editingGift?.name || newGift.name || ""}
                         onChange={(e) =>
                           editingGift
-                            ? setEditingGift({ ...editingGift, name: e.target.value })
+                            ? setEditingGift({
+                                ...editingGift,
+                                name: e.target.value,
+                              })
                             : setNewGift({ ...newGift, name: e.target.value })
                         }
                       />
@@ -165,11 +187,19 @@ export function AdminDashboard({ initialData }: AdminDashboardProps) {
                     <div className="space-y-2">
                       <Label>Status</Label>
                       <Select
-                        value={editingGift?.status || newGift.status || "available"}
+                        value={
+                          editingGift?.status || newGift.status || "available"
+                        }
                         onValueChange={(value) =>
                           editingGift
-                            ? setEditingGift({ ...editingGift, status: value as Gift["status"] })
-                            : setNewGift({ ...newGift, status: value as Gift["status"] })
+                            ? setEditingGift({
+                                ...editingGift,
+                                status: value as Gift["status"],
+                              })
+                            : setNewGift({
+                                ...newGift,
+                                status: value as Gift["status"],
+                              })
                         }
                       >
                         <SelectTrigger>
@@ -186,45 +216,97 @@ export function AdminDashboard({ initialData }: AdminDashboardProps) {
                   <div className="space-y-2">
                     <Label>Description</Label>
                     <Textarea
-                      value={editingGift?.description || newGift.description || ""}
+                      value={
+                        editingGift?.description || newGift.description || ""
+                      }
                       onChange={(e) =>
                         editingGift
-                          ? setEditingGift({ ...editingGift, description: e.target.value })
-                          : setNewGift({ ...newGift, description: e.target.value })
+                          ? setEditingGift({
+                              ...editingGift,
+                              description: e.target.value,
+                            })
+                          : setNewGift({
+                              ...newGift,
+                              description: e.target.value,
+                            })
                       }
                     />
                   </div>
+                  <ImageUploader
+                    bucket="gifts"
+                    label="Upload Gift Image"
+                    onUploaded={(url: any) =>
+                      editingGift
+                        ? setEditingGift({ ...editingGift, image_url: url })
+                        : setNewGift({ ...newGift, image_url: url })
+                    }
+                  />
                   <div className="space-y-2">
-                    <Label>Image URL</Label>
+                    <Label>Image URL (or upload above)</Label>
                     <Input
                       value={editingGift?.image_url || newGift.image_url || ""}
                       onChange={(e) =>
                         editingGift
-                          ? setEditingGift({ ...editingGift, image_url: e.target.value })
-                          : setNewGift({ ...newGift, image_url: e.target.value })
+                          ? setEditingGift({
+                              ...editingGift,
+                              image_url: e.target.value,
+                            })
+                          : setNewGift({
+                              ...newGift,
+                              image_url: e.target.value,
+                            })
                       }
+                      placeholder="https://example.com/image.jpg"
                     />
                   </div>
+                  {(editingGift?.image_url || newGift.image_url) && (
+                    <div className="space-y-2">
+                      <Label>Image Preview</Label>
+                      <img
+                        src={editingGift?.image_url || newGift.image_url}
+                        alt="Gift preview"
+                        className="w-32 h-32 object-cover rounded border"
+                      />
+                    </div>
+                  )}
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label>Pix QR URL</Label>
                       <Input
-                        value={editingGift?.pix_qr_url || newGift.pix_qr_url || ""}
+                        value={
+                          editingGift?.pix_qr_url || newGift.pix_qr_url || ""
+                        }
                         onChange={(e) =>
                           editingGift
-                            ? setEditingGift({ ...editingGift, pix_qr_url: e.target.value })
-                            : setNewGift({ ...newGift, pix_qr_url: e.target.value })
+                            ? setEditingGift({
+                                ...editingGift,
+                                pix_qr_url: e.target.value,
+                              })
+                            : setNewGift({
+                                ...newGift,
+                                pix_qr_url: e.target.value,
+                              })
                         }
                       />
                     </div>
                     <div className="space-y-2">
                       <Label>Pix Link URL</Label>
                       <Input
-                        value={editingGift?.pix_link_url || newGift.pix_link_url || ""}
+                        value={
+                          editingGift?.pix_link_url ||
+                          newGift.pix_link_url ||
+                          ""
+                        }
                         onChange={(e) =>
                           editingGift
-                            ? setEditingGift({ ...editingGift, pix_link_url: e.target.value })
-                            : setNewGift({ ...newGift, pix_link_url: e.target.value })
+                            ? setEditingGift({
+                                ...editingGift,
+                                pix_link_url: e.target.value,
+                              })
+                            : setNewGift({
+                                ...newGift,
+                                pix_link_url: e.target.value,
+                              })
                         }
                       />
                     </div>
@@ -237,8 +319,8 @@ export function AdminDashboard({ initialData }: AdminDashboardProps) {
                     <Button
                       variant="outline"
                       onClick={() => {
-                        setEditingGift(null)
-                        setNewGift({})
+                        setEditingGift(null);
+                        setNewGift({});
                       }}
                     >
                       <X className="mr-2 h-4 w-4" />
@@ -259,24 +341,41 @@ export function AdminDashboard({ initialData }: AdminDashboardProps) {
                           <h3 className="font-semibold">{gift.name}</h3>
                           <Badge
                             variant={
-                              gift.status === "paid" ? "default" : gift.status === "reserved" ? "secondary" : "outline"
+                              gift.status === "paid"
+                                ? "default"
+                                : gift.status === "reserved"
+                                ? "secondary"
+                                : "outline"
                             }
                           >
                             {gift.status}
                           </Badge>
                         </div>
-                        {gift.description && <p className="text-sm text-muted-foreground mb-2">{gift.description}</p>}
+                        {gift.description && (
+                          <p className="text-sm text-muted-foreground mb-2">
+                            {gift.description}
+                          </p>
+                        )}
                         {gift.reserved_by_name && (
                           <p className="text-sm">
-                            Reserved by: {gift.reserved_by_name} ({gift.reserved_by_email})
+                            Reserved by: {gift.reserved_by_name} (
+                            {gift.reserved_by_email})
                           </p>
                         )}
                       </div>
                       <div className="flex gap-2">
-                        <Button variant="outline" size="sm" onClick={() => setEditingGift(gift)}>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setEditingGift(gift)}
+                        >
                           <Edit className="h-4 w-4" />
                         </Button>
-                        <Button variant="outline" size="sm" onClick={() => deleteGift(gift.id)}>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => deleteGift(gift.id)}
+                        >
                           <Trash2 className="h-4 w-4" />
                         </Button>
                       </div>
@@ -290,7 +389,11 @@ export function AdminDashboard({ initialData }: AdminDashboardProps) {
           <TabsContent value="photos" className="space-y-6">
             <div className="flex justify-between items-center">
               <h2 className="text-2xl font-semibold">Manage Photos</h2>
-              <Button onClick={() => setNewPhoto({ image_url: "", sort_order: photos.length })}>
+              <Button
+                onClick={() =>
+                  setNewPhoto({ image_url: "", sort_order: photos.length })
+                }
+              >
                 <Plus className="mr-2 h-4 w-4" />
                 Add Photo
               </Button>
@@ -299,28 +402,64 @@ export function AdminDashboard({ initialData }: AdminDashboardProps) {
             {(newPhoto.image_url !== undefined || editingPhoto) && (
               <Card>
                 <CardHeader>
-                  <CardTitle>{editingPhoto ? "Edit Photo" : "Add New Photo"}</CardTitle>
+                  <CardTitle>
+                    {editingPhoto ? "Edit Photo" : "Add New Photo"}
+                  </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
+                  <ImageUploader
+                    bucket="photos"
+                    label="Upload Carousel Photo"
+                    onUploaded={(url: any) =>
+                      editingPhoto
+                        ? setEditingPhoto({ ...editingPhoto, image_url: url })
+                        : setNewPhoto({ ...newPhoto, image_url: url })
+                    }
+                  />
                   <div className="space-y-2">
-                    <Label>Image URL</Label>
+                    <Label>Image URL (or upload above)</Label>
                     <Input
-                      value={editingPhoto?.image_url || newPhoto.image_url || ""}
+                      value={
+                        editingPhoto?.image_url || newPhoto.image_url || ""
+                      }
                       onChange={(e) =>
                         editingPhoto
-                          ? setEditingPhoto({ ...editingPhoto, image_url: e.target.value })
-                          : setNewPhoto({ ...newPhoto, image_url: e.target.value })
+                          ? setEditingPhoto({
+                              ...editingPhoto,
+                              image_url: e.target.value,
+                            })
+                          : setNewPhoto({
+                              ...newPhoto,
+                              image_url: e.target.value,
+                            })
                       }
+                      placeholder="https://example.com/photo.jpg"
                     />
                   </div>
+                  {(editingPhoto?.image_url || newPhoto.image_url) && (
+                    <div className="space-y-2">
+                      <Label>Image Preview</Label>
+                      <img
+                        src={editingPhoto?.image_url || newPhoto.image_url}
+                        alt="Photo preview"
+                        className="w-48 h-32 object-cover rounded border"
+                      />
+                    </div>
+                  )}
                   <div className="space-y-2">
                     <Label>Caption</Label>
                     <Input
                       value={editingPhoto?.caption || newPhoto.caption || ""}
                       onChange={(e) =>
                         editingPhoto
-                          ? setEditingPhoto({ ...editingPhoto, caption: e.target.value })
-                          : setNewPhoto({ ...newPhoto, caption: e.target.value })
+                          ? setEditingPhoto({
+                              ...editingPhoto,
+                              caption: e.target.value,
+                            })
+                          : setNewPhoto({
+                              ...newPhoto,
+                              caption: e.target.value,
+                            })
                       }
                     />
                   </div>
@@ -328,11 +467,19 @@ export function AdminDashboard({ initialData }: AdminDashboardProps) {
                     <Label>Sort Order</Label>
                     <Input
                       type="number"
-                      value={editingPhoto?.sort_order || newPhoto.sort_order || 0}
+                      value={
+                        editingPhoto?.sort_order || newPhoto.sort_order || 0
+                      }
                       onChange={(e) =>
                         editingPhoto
-                          ? setEditingPhoto({ ...editingPhoto, sort_order: Number.parseInt(e.target.value) })
-                          : setNewPhoto({ ...newPhoto, sort_order: Number.parseInt(e.target.value) })
+                          ? setEditingPhoto({
+                              ...editingPhoto,
+                              sort_order: Number.parseInt(e.target.value),
+                            })
+                          : setNewPhoto({
+                              ...newPhoto,
+                              sort_order: Number.parseInt(e.target.value),
+                            })
                       }
                     />
                   </div>
@@ -344,8 +491,8 @@ export function AdminDashboard({ initialData }: AdminDashboardProps) {
                     <Button
                       variant="outline"
                       onClick={() => {
-                        setEditingPhoto(null)
-                        setNewPhoto({})
+                        setEditingPhoto(null);
+                        setNewPhoto({});
                       }}
                     >
                       <X className="mr-2 h-4 w-4" />
@@ -367,14 +514,26 @@ export function AdminDashboard({ initialData }: AdminDashboardProps) {
                         className="w-24 h-24 object-cover rounded"
                       />
                       <div className="flex-1">
-                        <p className="font-medium">{photo.caption || "No caption"}</p>
-                        <p className="text-sm text-muted-foreground">Sort order: {photo.sort_order}</p>
+                        <p className="font-medium">
+                          {photo.caption || "No caption"}
+                        </p>
+                        <p className="text-sm text-muted-foreground">
+                          Sort order: {photo.sort_order}
+                        </p>
                       </div>
                       <div className="flex gap-2">
-                        <Button variant="outline" size="sm" onClick={() => setEditingPhoto(photo)}>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setEditingPhoto(photo)}
+                        >
                           <Edit className="h-4 w-4" />
                         </Button>
-                        <Button variant="outline" size="sm" onClick={() => deletePhoto(photo.id)}>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => deletePhoto(photo.id)}
+                        >
                           <Trash2 className="h-4 w-4" />
                         </Button>
                       </div>
@@ -395,14 +554,24 @@ export function AdminDashboard({ initialData }: AdminDashboardProps) {
                       <div>
                         <div className="flex items-center gap-2 mb-2">
                           <h3 className="font-semibold">{rsvp.name}</h3>
-                          <Badge variant={rsvp.attending ? "default" : "secondary"}>
+                          <Badge
+                            variant={rsvp.attending ? "default" : "secondary"}
+                          >
                             {rsvp.attending ? "Attending" : "Not Attending"}
                           </Badge>
                         </div>
-                        {rsvp.email && <p className="text-sm text-muted-foreground">{rsvp.email}</p>}
-                        {rsvp.message && <p className="text-sm mt-2">{rsvp.message}</p>}
+                        {rsvp.email && (
+                          <p className="text-sm text-muted-foreground">
+                            {rsvp.email}
+                          </p>
+                        )}
+                        {rsvp.message && (
+                          <p className="text-sm mt-2">{rsvp.message}</p>
+                        )}
                       </div>
-                      <p className="text-xs text-muted-foreground">{new Date(rsvp.created_at).toLocaleDateString()}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {new Date(rsvp.created_at).toLocaleDateString()}
+                      </p>
                     </div>
                   </CardContent>
                 </Card>
@@ -415,7 +584,9 @@ export function AdminDashboard({ initialData }: AdminDashboardProps) {
             <Card>
               <CardHeader>
                 <CardTitle>General Settings</CardTitle>
-                <CardDescription>Configure your wedding website</CardDescription>
+                <CardDescription>
+                  Configure your wedding website
+                </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
@@ -423,14 +594,24 @@ export function AdminDashboard({ initialData }: AdminDashboardProps) {
                     <Label>Cover Title</Label>
                     <Input
                       value={settings.cover_title || ""}
-                      onChange={(e) => setSettings({ ...settings, cover_title: e.target.value })}
+                      onChange={(e) =>
+                        setSettings({
+                          ...settings,
+                          cover_title: e.target.value,
+                        })
+                      }
                     />
                   </div>
                   <div className="space-y-2">
                     <Label>Cover Subtitle</Label>
                     <Input
                       value={settings.cover_subtitle || ""}
-                      onChange={(e) => setSettings({ ...settings, cover_subtitle: e.target.value })}
+                      onChange={(e) =>
+                        setSettings({
+                          ...settings,
+                          cover_subtitle: e.target.value,
+                        })
+                      }
                     />
                   </div>
                 </div>
@@ -438,14 +619,24 @@ export function AdminDashboard({ initialData }: AdminDashboardProps) {
                   <Label>Location Address</Label>
                   <Input
                     value={settings.location_address || ""}
-                    onChange={(e) => setSettings({ ...settings, location_address: e.target.value })}
+                    onChange={(e) =>
+                      setSettings({
+                        ...settings,
+                        location_address: e.target.value,
+                      })
+                    }
                   />
                 </div>
                 <div className="space-y-2">
                   <Label>Maps Embed URL</Label>
                   <Input
                     value={settings.maps_embed_url || ""}
-                    onChange={(e) => setSettings({ ...settings, maps_embed_url: e.target.value })}
+                    onChange={(e) =>
+                      setSettings({
+                        ...settings,
+                        maps_embed_url: e.target.value,
+                      })
+                    }
                   />
                 </div>
                 <div className="grid grid-cols-2 gap-4">
@@ -453,14 +644,21 @@ export function AdminDashboard({ initialData }: AdminDashboardProps) {
                     <Label>Global Pix QR URL</Label>
                     <Input
                       value={settings.pix_qr_url || ""}
-                      onChange={(e) => setSettings({ ...settings, pix_qr_url: e.target.value })}
+                      onChange={(e) =>
+                        setSettings({ ...settings, pix_qr_url: e.target.value })
+                      }
                     />
                   </div>
                   <div className="space-y-2">
                     <Label>Global Pix Link URL</Label>
                     <Input
                       value={settings.pix_link_url || ""}
-                      onChange={(e) => setSettings({ ...settings, pix_link_url: e.target.value })}
+                      onChange={(e) =>
+                        setSettings({
+                          ...settings,
+                          pix_link_url: e.target.value,
+                        })
+                      }
                     />
                   </div>
                 </div>
@@ -468,7 +666,12 @@ export function AdminDashboard({ initialData }: AdminDashboardProps) {
                   <Label>Pix Instructions</Label>
                   <Textarea
                     value={settings.pix_instructions || ""}
-                    onChange={(e) => setSettings({ ...settings, pix_instructions: e.target.value })}
+                    onChange={(e) =>
+                      setSettings({
+                        ...settings,
+                        pix_instructions: e.target.value,
+                      })
+                    }
                   />
                 </div>
                 <Button onClick={saveSettings}>
@@ -481,5 +684,5 @@ export function AdminDashboard({ initialData }: AdminDashboardProps) {
         </Tabs>
       </div>
     </div>
-  )
+  );
 }
