@@ -1,27 +1,25 @@
-import { type NextRequest, NextResponse } from "next/server"
-import { getSupabaseClient } from "@/src/lib/supabase-server"
-import { notifyOwner } from "@/src/lib/email"
+import { type NextRequest, NextResponse } from "next/server";
+import { supabaseAdmin } from "@/src/lib/supabase-admin";
+import { notifyOwner } from "@/src/lib/email";
 
 interface RSVPRequest {
-  name: string
-  email?: string
-  attending: boolean
-  message?: string
+  name: string;
+  email?: string;
+  attending: boolean;
+  message?: string;
 }
 
 export async function POST(request: NextRequest) {
   try {
-    const body: RSVPRequest = await request.json()
-    const { name, email, attending, message } = body
+    const body: RSVPRequest = await request.json();
+    const { name, email, attending, message } = body;
 
     if (!name) {
-      return NextResponse.json({ error: "Name is required" }, { status: 400 })
+      return NextResponse.json({ error: "Name is required" }, { status: 400 });
     }
 
-    const supabase = getSupabaseClient()
-
     // Insert RSVP
-    const { data: rsvp, error: insertError } = await supabase
+    const { data: rsvp, error: insertError } = await supabaseAdmin
       .from("rsvps")
       .insert({
         name: name.trim(),
@@ -30,18 +28,25 @@ export async function POST(request: NextRequest) {
         message: message?.trim() || null,
       })
       .select("*")
-      .single()
+      .single();
 
     if (insertError) {
-      console.error("Error inserting RSVP:", insertError)
-      return NextResponse.json({ error: "Failed to save RSVP" }, { status: 500 })
+      console.error("Error inserting RSVP:", insertError);
+      return NextResponse.json(
+        { error: "Failed to save RSVP" },
+        { status: 500 }
+      );
     }
 
     // Send notification to owners
     try {
-      const attendingText = attending ? "CONFIRMOU presença" : "NÃO PODERÁ comparecer"
-      const emailText = email ? ` (${email})` : ""
-      const messageText = message ? `<p><strong>Mensagem:</strong> ${message}</p>` : ""
+      const attendingText = attending
+        ? "CONFIRMOU presença"
+        : "NÃO PODERÁ comparecer";
+      const emailText = email ? ` (${email})` : "";
+      const messageText = message
+        ? `<p><strong>Mensagem:</strong> ${message}</p>`
+        : "";
 
       await notifyOwner(
         `RSVP: ${name} ${attendingText}`,
@@ -55,10 +60,10 @@ export async function POST(request: NextRequest) {
               Recebido em: ${new Date().toLocaleString("pt-BR")}
             </p>
           </div>
-        `,
-      )
+        `
+      );
     } catch (emailError) {
-      console.error("Error sending RSVP notification:", emailError)
+      console.error("Error sending RSVP notification:", emailError);
       // Don't fail the RSVP if email fails
     }
 
@@ -69,9 +74,12 @@ export async function POST(request: NextRequest) {
         name: rsvp.name,
         attending: rsvp.attending,
       },
-    })
+    });
   } catch (error) {
-    console.error("Error processing RSVP:", error)
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
+    console.error("Error processing RSVP:", error);
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
 }

@@ -1,15 +1,37 @@
-import { createServerClient as createSupabaseClient } from "@supabase/ssr"
+// src/lib/supabase-server.ts
+import { createServerClient } from '@supabase/ssr'
+import { cookies } from 'next/headers'
+import type { SupabaseClient } from '@supabase/supabase-js'
 
-export function getSupabaseClient() {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-  if (!supabaseUrl || !supabaseKey) {
-    console.warn("Supabase environment variables not configured. Some features may not work.")
-    return null
+export function supabaseServer(): SupabaseClient {
+  if (!url || !anon) {
+    throw new Error('Supabase env vars missing: NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY')
   }
 
-  return createSupabaseClient(supabaseUrl, supabaseKey, {
-    cookies: {},
+  const store = cookies()
+
+  return createServerClient(url, anon, {
+    cookies: {
+      get(name: string) {
+        return store.get(name)?.value
+      },
+      set(name: string, value: string, options?: any) {
+        try {
+          store.set({ name, value, ...options })
+        } catch {}
+      },
+      remove(name: string, options?: any) {
+        try {
+          store.set({ name, value: '', ...options, maxAge: 0 })
+          store.delete(name)
+        } catch {}
+      },
+    },
   })
 }
+
+// Optional alias, but keep the non-null return type
+export const getSupabaseClient = supabaseServer

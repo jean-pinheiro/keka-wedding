@@ -1,70 +1,79 @@
-import { getSupabaseClient } from "@/src/lib/supabase-server"
-import { Carousel } from "@/src/components/Carousel"
-import { MapEmbed } from "@/src/components/MapEmbed"
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
-import { Gift } from "lucide-react"
+import { supabaseServer } from "@/src/lib/supabase-server";
+import { Carousel } from "@/src/components/Carousel";
+import { MapEmbed } from "@/src/components/MapEmbed";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { Gift } from "lucide-react";
 
 interface Photo {
-  id: string
-  image_url: string
-  caption?: string
-  sort_order: number
+  id: string;
+  image_url: string;
+  caption?: string;
+  sort_order: number;
 }
 
 interface SiteSettings {
-  location_address?: string
-  maps_embed_url?: string
-  cover_title?: string
-  cover_subtitle?: string
+  location_address?: string;
+  maps_embed_url?: string;
+  cover_title?: string;
+  cover_subtitle?: string;
 }
 
 async function getPhotos(): Promise<Photo[]> {
-  const supabase = getSupabaseClient()
+  const supabase = supabaseServer();
 
   if (!supabase) {
-    console.log("Supabase not configured, returning empty photos array")
-    return []
+    console.log("Supabase not configured, returning empty photos array");
+    return [];
   }
 
-  const { data: photos, error } = await supabase.from("photos").select("*").order("sort_order", { ascending: true })
+  const { data: photos, error } = await supabase
+    .from("photos")
+    .select("*")
+    .order("sort_order", { ascending: true });
 
   if (error) {
-    console.error("Error fetching photos:", error)
-    return []
+    console.error("Error fetching photos:", error);
+    return [];
   }
 
-  return photos || []
+  return photos || [];
 }
 
 async function getSiteSettings(): Promise<SiteSettings> {
-  const supabase = getSupabaseClient()
+  const supabase = supabaseServer();
 
   if (!supabase) {
-    console.log("Supabase not configured, returning default settings")
+    console.log("Supabase not configured, returning default settings");
     return {
       cover_title: "Nosso Casamento",
       cover_subtitle: "Celebre conosco nosso dia especial",
       location_address: "Local a ser definido",
-    }
+    };
   }
 
-  const { data: settings, error } = await supabase.from("site_settings").select("*").single()
+  const { data: settings, error } = await supabase
+    .from("site_settings")
+    .select("*")
+    .single();
 
   if (error) {
-    console.error("Error fetching site settings:", error)
+    console.error("Error fetching site settings:", error);
     return {
       cover_title: "Nosso Casamento",
       cover_subtitle: "Celebre conosco nosso dia especial",
       location_address: "Local a ser definido",
-    }
+    };
   }
 
-  return settings || {}
+  return settings || {};
 }
 
 export default async function HomePage() {
-  const [photos, settings] = await Promise.all([getPhotos(), getSiteSettings()])
+  const [photos, settings] = await Promise.all([
+    getPhotos(),
+    getSiteSettings(),
+  ]);
 
   return (
     <div className="min-h-screen bg-white">
@@ -90,7 +99,9 @@ export default async function HomePage() {
                   <path d="M16 14l2 2" />
                 </svg>
               </div>
-              <h1 className="text-5xl md:text-7xl font-serif italic mb-2">Jessica e Artur</h1>
+              <h1 className="text-5xl md:text-7xl font-serif italic mb-2">
+                Jessica e Artur
+              </h1>
               <p className="text-lg md:text-xl font-light tracking-wider">
                 {settings.cover_subtitle || "9 DE AGOSTO DE 2025"}
               </p>
@@ -118,10 +129,14 @@ export default async function HomePage() {
                 <path d="M16 14l2 2" />
               </svg>
             </div>
-            <h2 className="text-4xl font-serif italic mb-8 text-gray-800">Sobre o Evento</h2>
+            <h2 className="text-4xl font-serif italic mb-8 text-gray-800">
+              Sobre o Evento
+            </h2>
             <p className="text-gray-600 leading-relaxed text-lg mb-8">
-              Criamos essa site para compartilhar com vocês os detalhes do nosso casamento. Estamos muito felizes e
-              contentes com a presença de todos os nossos grandes amigos. Aguardamos vocês no nosso grande dia!
+              Criamos essa site para compartilhar com vocês os detalhes do nosso
+              casamento. Estamos muito felizes e contentes com a presença de
+              todos os nossos grandes amigos. Aguardamos vocês no nosso grande
+              dia!
             </p>
           </div>
         </div>
@@ -146,12 +161,19 @@ export default async function HomePage() {
                 <path d="M16 14l2 2" />
               </svg>
             </div>
-            <h2 className="text-4xl font-serif italic mb-8 text-gray-800">Lista de Presentes</h2>
+            <h2 className="text-4xl font-serif italic mb-8 text-gray-800">
+              Lista de Presentes
+            </h2>
             <p className="text-gray-600 leading-relaxed text-lg mb-8">
-              Escolha um presente especial para nos ajudar a começar nossa nova vida juntos. Sua presença já é o maior
-              presente, mas se desejar nos presentear, ficamos muito gratos.
+              Escolha um presente especial para nos ajudar a começar nossa nova
+              vida juntos. Sua presença já é o maior presente, mas se desejar
+              nos presentear, ficamos muito gratos.
             </p>
-            <Button asChild size="lg" className="bg-gray-800 hover:bg-gray-900 text-white px-8 py-3">
+            <Button
+              asChild
+              size="lg"
+              className="bg-gray-800 hover:bg-gray-900 text-white px-8 py-3"
+            >
               <Link href="/gifts">
                 <Gift className="mr-2 h-5 w-5" />
                 Ver Lista de Presentes
@@ -181,10 +203,19 @@ export default async function HomePage() {
               </svg>
             </div>
             <div className="text-center mb-8">
-              <h2 className="text-4xl font-serif italic mb-4 text-gray-800">Cerimônia</h2>
-              {settings.location_address && <p className="text-gray-600 text-lg">{settings.location_address}</p>}
+              <h2 className="text-4xl font-serif italic mb-4 text-gray-800">
+                Cerimônia
+              </h2>
+              {settings.location_address && (
+                <p className="text-gray-600 text-lg">
+                  {settings.location_address}
+                </p>
+              )}
             </div>
-            <MapEmbed embedUrl={settings.maps_embed_url} address={settings.location_address} />
+            <MapEmbed
+              embedUrl={settings.maps_embed_url}
+              address={settings.location_address}
+            />
           </div>
         </div>
       </section>
@@ -206,9 +237,11 @@ export default async function HomePage() {
               <path d="M16 14l2 2" />
             </svg>
           </div>
-          <p className="text-gray-500">Feito com amor para nosso dia especial</p>
+          <p className="text-gray-500">
+            Feito com amor para nosso dia especial
+          </p>
         </div>
       </footer>
     </div>
-  )
+  );
 }
