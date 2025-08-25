@@ -11,27 +11,67 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Campos obrigatórios ausentes" }, { status: 400 })
     }
 
-    // Save in DB
+    // normalize email to lowercase
+    const normEmail = String(email).trim().toLowerCase()
+
+    // 1) Check if this email already confirmed
+    const { data: existing, error: findErr } = await supabaseAdmin
+      .from("rsvps")
+      .select("*")
+      .eq("email", normEmail)
+      .maybeSingle()
+
+    if (findErr) {
+      return NextResponse.json({ error: findErr.message }, { status: 500 })
+    }
+
+    if (existing) {
+      // Already confirmed -> do NOT send emails again
+      return NextResponse.json({
+        ok: true,
+        alreadyConfirmed: true,
+        rsvp: existing,
+        message: `Este e-mail já tem presença confirmada em nome de ${existing.first_name} ${existing.last_name}.`,
+      })
+    }
+
+    // 2) Insert new RSVP (email is unique now)
     const { data, error } = await supabaseAdmin
       .from("rsvps")
       .insert({
         first_name,
         last_name,
-        email,
+        email: normEmail,
         attending: true,
-        // keep legacy name populated for old UI if present
-        name: `${first_name} ${last_name}`.trim(),
+        name: `${first_name} ${last_name}`.trim(), // legacy field support
       })
       .select("*")
       .single()
 
-    if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+    if (error) {
+      // if a race happened and unique index fired, treat as alreadyConfirmed
+      if (error.code === "23505") {
+        const { data: justCreated } = await supabaseAdmin
+          .from("rsvps")
+          .select("*")
+          .eq("email", normEmail)
+          .maybeSingle()
 
-    // Emails (best-effort; do not fail the request if email fails)
+        return NextResponse.json({
+          ok: true,
+          alreadyConfirmed: true,
+          rsvp: justCreated ?? null,
+          message: "Este e-mail já confirmou presença.",
+        })
+      }
+      return NextResponse.json({ error: error.message }, { status: 500 })
+    }
+
+    // 3) Send emails (best-effort; don't fail the request if mailing fails)
     try {
       await Promise.all([
-        sendRsvpGuestEmail(email, first_name, last_name),
-        notifyRsvpAdmin(first_name, last_name, email),
+        sendRsvpGuestEmail(normEmail, first_name, last_name),
+        notifyRsvpAdmin(first_name, last_name, normEmail),
       ])
     } catch (e) {
       console.warn("RSVP email failure:", e)

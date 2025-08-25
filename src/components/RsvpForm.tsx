@@ -30,10 +30,17 @@ export function RsvpForm() {
       const json = await res.json();
       if (!res.ok) throw new Error(json.error || "Falha ao confirmar presença");
 
-      setFirst("");
-      setLast("");
-      setEmail("");
-      toast.success("Presença confirmada! Enviamos um e-mail de confirmação.");
+      if (json.alreadyConfirmed) {
+        toast.info(json.message || "Este e-mail já tem presença confirmada.");
+      } else {
+        toast.success(
+          "Presença confirmada! Enviamos um e-mail de confirmação."
+        );
+        // reset only on new confirmation
+        setFirst("");
+        setLast("");
+        setEmail("");
+      }
     } catch (err: any) {
       toast.error(err?.message || "Erro ao confirmar presença");
     } finally {

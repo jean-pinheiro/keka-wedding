@@ -69,7 +69,7 @@ export async function notifyRsvpAdmin(
   try {
     await resend.emails.send({
       from: process.env.OWNER_EMAIL,
-      to: process.env.OWNER_EMAIL,
+      to: process.env.ADMIN_EMAIL!,
       subject: "Nova Confirmação de Presença - Casamento",
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
@@ -161,7 +161,7 @@ export async function notifyGiftReservationAdmin(
   try {
     await resend.emails.send({
       from: process.env.OWNER_EMAIL,
-      to: process.env.OWNER_EMAIL,
+      to: process.env.ADMIN_EMAIL!,
       subject: "Novo Presente Reservado - Casamento",
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
@@ -274,7 +274,7 @@ export async function notifyOwner(subject: string, html: string) {
   try {
     await resend.emails.send({
       from: process.env.OWNER_EMAIL,
-      to: process.env.OWNER_EMAIL,
+      to: process.env.ADMIN_EMAIL!,
       subject: subject,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
