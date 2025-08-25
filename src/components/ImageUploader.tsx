@@ -6,6 +6,7 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
 
 interface ImageUploaderProps {
   bucket?: string;
@@ -56,11 +57,13 @@ export function ImageUploader({
         // Clear the input
         e.target.value = "";
       } else {
-        setError(result.error || "Upload failed");
+        setError(result.error || "Falha no Upload");
+        toast.success("Imagem enviada");
       }
-    } catch (err) {
+    } catch (err: any) {
       setError("Upload failed. Please try again.");
-      console.error("Upload error:", err);
+      toast.error(err?.message || "Falha no upload");
+      console.error("Falha no upload:", err);
     } finally {
       setLoading(false);
     }

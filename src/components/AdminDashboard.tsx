@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/select";
 import { Trash2, Edit, Plus, Save, X } from "lucide-react";
 import { ImageUploader } from "@/src/components/ImageUploader";
+import { toast } from "sonner";
 
 interface Gift {
   id: string;
@@ -77,6 +78,7 @@ export function AdminDashboard({ initialData }: AdminDashboardProps) {
   const [gifts, setGifts] = useState(initialData.gifts);
   const [photos, setPhotos] = useState(initialData.photos);
   const [settings, setSettings] = useState(initialData.settings || {});
+  const [savingSettings, setSavingSettings] = useState(false);
   const [editingGift, setEditingGift] = useState<Gift | null>(null);
   const [editingPhoto, setEditingPhoto] = useState<Photo | null>(null);
   const [newGift, setNewGift] = useState<Partial<Gift>>({});
@@ -109,7 +111,9 @@ export function AdminDashboard({ initialData }: AdminDashboardProps) {
       });
       setEditingGift(null);
       setNewGift({});
+      toast.success("Presente salvo");
     } catch (e: any) {
+      toast.error(e?.message || "Falha ao salvar presente");
       alert(e.message || "Falha ao salvar presente");
     }
   };
@@ -136,12 +140,15 @@ export function AdminDashboard({ initialData }: AdminDashboardProps) {
       });
       setEditingPhoto(null);
       setNewPhoto({});
+      toast.success("Foto salva");
     } catch (e: any) {
+      toast.error(e?.message || "Falha ao salvar foto");
       alert(e.message || "Falha ao salvar foto");
     }
   };
 
   const saveSettings = async () => {
+    setSavingSettings(true); // +++
     try {
       const res = await fetch("/api/admin/settings/upsert", {
         method: "POST",
@@ -153,9 +160,11 @@ export function AdminDashboard({ initialData }: AdminDashboardProps) {
         throw new Error(json.error || "Erro ao salvar configurações");
 
       setSettings(json.settings || settings);
-      // optional: toast success
+      toast.success("Configurações salvas"); // +++
     } catch (e: any) {
-      alert(e.message || "Falha ao salvar configurações");
+      toast.error(e?.message || "Falha ao salvar configurações"); // +++
+    } finally {
+      setSavingSettings(false); // +++
     }
   };
 
@@ -169,18 +178,25 @@ export function AdminDashboard({ initialData }: AdminDashboardProps) {
     const json = await res.json();
     if (!res.ok) return alert(json.error || "Falha ao excluir");
     setGifts(gifts.filter((g) => g.id !== id));
+    toast.success("Presente excluído");
   };
 
   const deletePhoto = async (id: string) => {
     if (!confirm("Excluir esta foto?")) return;
-    const res = await fetch("/api/admin/photos/delete", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id }),
-    });
-    const json = await res.json();
-    if (!res.ok) return alert(json.error || "Falha ao excluir");
-    setPhotos(photos.filter((p) => p.id !== id));
+    try {
+      const res = await fetch("/api/admin/photos/delete", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id }),
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error || "Falha ao excluir");
+
+      setPhotos((prev) => prev.filter((p) => p.id !== id));
+      toast.success("Foto excluída");
+    } catch (e: any) {
+      toast.error(e?.message || "Falha ao excluir foto");
+    }
   };
 
   return (
