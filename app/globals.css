@@ -3,6 +3,13 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Tell Tailwind v4 about the custom font family */
+@theme {
+  /* Now you can use `font-ainslay` */
+  --font-ainslay: var(--font-ainslay), ui-sans-serif, system-ui, -apple-system,
+    Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+}
+
 :root {
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -120,4 +127,12 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.font-ainslay {
+  font-family: var(--font-ainslay), serif;
 }

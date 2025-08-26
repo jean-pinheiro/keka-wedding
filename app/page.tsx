@@ -6,7 +6,8 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Gift } from "lucide-react";
 import Flourish from "@/src/components/Flourish";
-
+import SideMenu from "@/src/components/SideMenu";
+import { ainslay } from "@/src/lib/fonts";
 interface Photo {
   id: string;
   image_url: string;
@@ -21,6 +22,8 @@ interface SiteSettings {
   cover_subtitle?: string;
   pix_link_url?: string; // if not already included here
   amazon_list_url?: string; // 👈 new
+  cover_image_url?: string; // Added cover image URL field
+  about_text?: string; // Added about text field
 }
 
 async function getPhotos(): Promise<Photo[]> {
@@ -81,18 +84,29 @@ export default async function HomePage() {
 
   return (
     <div className="min-h-screen bg-white">
+      <SideMenu />
+
       {/* Hero Carousel Section */}
-      <section className="relative">
+      <section id="inicio" className="relative">
         <div className="h-screen relative overflow-hidden">
-          <Carousel photos={photos} />
-          {/* Overlay with couple names */}
+          {/* Cover image (fallback to first photo) */}
+          {settings.cover_image_url || photos[0]?.image_url ? (
+            <img
+              src={settings.cover_image_url || photos[0]?.image_url}
+              alt="Capa do casamento"
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+          ) : (
+            <div className="absolute inset-0 bg-gray-200" />
+          )}
+          {/* Overlay with couple names/date */}
           <div className="absolute inset-0 bg-black/30 flex items-end justify-center pb-20">
             <div className="text-center text-white">
-              <h1 className="text-5xl md:text-7xl font-serif italic mb-2">
-                Jessica e Artur
+              <h1 className="text-5xl md:text-7xl font-ainslay font-bold mb-2">
+                {settings.cover_title || "Jessica e Artur"}
               </h1>
               <p className="text-lg md:text-xl font-light tracking-wider">
-                {settings.cover_subtitle || "9 DE AGOSTO DE 2025"}
+                {settings.cover_subtitle || "3 DE OUTUBRO DE 2025"}
               </p>
             </div>
           </div>
@@ -100,7 +114,7 @@ export default async function HomePage() {
       </section>
 
       {/* About the Couple Section */}
-      <section className="py-20 bg-gray-50">
+      <section id="sobre" className="py-15 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
             {/* Decorative element */}
@@ -109,21 +123,36 @@ export default async function HomePage() {
                 <Flourish className="w-60 h-16" />
               </div>
             </div>
-            <h2 className="text-4xl font-serif italic mb-8 text-gray-800">
+            <h2 className="text-4xl font-ainslay font-bold mb-8 text-gray-800">
               Sobre o Evento
             </h2>
-            <p className="text-gray-600 leading-relaxed text-lg mb-8">
-              Criamos essa site para compartilhar com vocês os detalhes do nosso
-              casamento. Estamos muito felizes e contentes com a presença de
-              todos os nossos grandes amigos. Aguardamos vocês no nosso grande
-              dia!
-            </p>
+            {/* Bounded carousel */}
+            <div className="mx-auto mb-8 w-full max-w-[800px]">
+              {/* wrapper to keep reasonable height; adjust as you like */}
+              <div className="relative w-full max-h-[800px]">
+                <Carousel photos={photos} />
+              </div>
+            </div>
+
+            {/* About text from settings */}
+            {settings.about_text ? (
+              <p className="text-gray-600 leading-relaxed text-lg whitespace-pre-line">
+                {settings.about_text}
+              </p>
+            ) : (
+              <p className="text-gray-600 leading-relaxed text-lg">
+                Criamos esse site para compartilhar com vocês os detalhes do
+                nosso casamento. Estamos muito felizes e contentes com a
+                presença de todos os nossos grandes amigos. Aguardamos vocês no
+                nosso grande dia!
+              </p>
+            )}
           </div>
         </div>
       </section>
 
       {/* RSVP Section */}
-      <section className="py-20 bg-white">
+      <section id="confirme" className="py-15 bg-white">
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto">
             {/* Decorative element */}
@@ -132,7 +161,7 @@ export default async function HomePage() {
                 <Flourish className="w-60 h-16" />
               </div>
             </div>
-            <h2 className="text-4xl font-serif italic mb-8 text-center text-gray-800">
+            <h2 className="text-4xl font-ainslay font-bold mb-8 text-center text-gray-800">
               Confirme sua Presença
             </h2>
             <p className="text-gray-600 leading-relaxed text-lg mb-8 text-center">
@@ -145,7 +174,7 @@ export default async function HomePage() {
       </section>
 
       {/* Gifts Section */}
-      <section className="py-20 bg-gray-50">
+      <section id="presentes" className="py-15 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
             <div className="mb-8 text-[--gold]">
@@ -154,7 +183,7 @@ export default async function HomePage() {
               </div>
             </div>
 
-            <h2 className="text-4xl font-serif italic mb-6 text-gray-800">
+            <h2 className="text-4xl font-ainslay font-bold mb-6 text-gray-800">
               Lista de Presentes
             </h2>
 
@@ -210,7 +239,7 @@ export default async function HomePage() {
       </section>
 
       {/* Location Section */}
-      <section className="py-20 bg-white">
+      <section id="local" className="py-15 bg-white">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             {/* Decorative leaf element */}
@@ -220,7 +249,7 @@ export default async function HomePage() {
               </div>
             </div>
             <div className="text-center mb-8">
-              <h2 className="text-4xl font-serif italic mb-4 text-gray-800">
+              <h2 className="text-4xl font-ainslay font-bold mb-4 text-gray-800">
                 Cerimônia
               </h2>
               {settings.location_address && (
