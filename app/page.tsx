@@ -307,9 +307,14 @@ export default async function HomePage() {
                 Nosso casamento será oficializado no Cartório Mucuripe. Como o
                 espaço comporta apenas 20 pessoas, este momento ficará restrito
                 aos familiares mais próximos e padrinhos. Se você gostaria de
-                participar da celebração simbólica, entre em contato
-                (jessicadasilva.jsp@gmail.com) com a noiva para verificar a
-                disponibilidade de vagas.
+                participar da celebração simbólica, entre em contato (
+                <a
+                  href="mailto:jessicadasilva.jsp@gmail.com"
+                  style={{ color: "blue" }}
+                >
+                  jessicadasilva.jsp@gmail.com
+                </a>
+                ) com a noiva para verificar a disponibilidade de vagas.
               </p>
             </div>
           </div>
