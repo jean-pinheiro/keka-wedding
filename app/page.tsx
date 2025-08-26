@@ -5,6 +5,7 @@ import { RsvpForm } from "@/src/components/RsvpForm";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Gift } from "lucide-react";
+import Flourish from "@/src/components/Flourish";
 
 interface Photo {
   id: string;
@@ -87,21 +88,6 @@ export default async function HomePage() {
           {/* Overlay with couple names */}
           <div className="absolute inset-0 bg-black/30 flex items-end justify-center pb-20">
             <div className="text-center text-white">
-              {/* Decorative leaf element */}
-              <div className="mb-4">
-                <svg
-                  className="w-12 h-12 mx-auto text-white/80"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1"
-                >
-                  <path d="M12 2C8 2 5 5 5 9c0 4 3 7 7 7s7-3 7-7c0-4-3-7-7-7z" />
-                  <path d="M12 16v6" />
-                  <path d="M8 14l-2 2" />
-                  <path d="M16 14l2 2" />
-                </svg>
-              </div>
               <h1 className="text-5xl md:text-7xl font-serif italic mb-2">
                 Jessica e Artur
               </h1>
@@ -117,20 +103,11 @@ export default async function HomePage() {
       <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
-            {/* Decorative leaf element */}
-            <div className="mb-8">
-              <svg
-                className="w-12 h-12 mx-auto text-gray-400"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1"
-              >
-                <path d="M12 2C8 2 5 5 5 9c0 4 3 7 7 7s7-3 7-7c0-4-3-7-7-7z" />
-                <path d="M12 16v6" />
-                <path d="M8 14l-2 2" />
-                <path d="M16 14l2 2" />
-              </svg>
+            {/* Decorative element */}
+            <div className="mb-8 text-[--gold]">
+              <div className="text-[#6B7A3C]">
+                <Flourish className="w-60 h-16" />
+              </div>
             </div>
             <h2 className="text-4xl font-serif italic mb-8 text-gray-800">
               Sobre o Evento
@@ -149,20 +126,11 @@ export default async function HomePage() {
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto">
-            {/* Decorative leaf element */}
-            <div className="mb-8 text-center">
-              <svg
-                className="w-12 h-12 mx-auto text-gray-400"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1"
-              >
-                <path d="M12 2C8 2 5 5 5 9c0 4 3 7 7 7s7-3 7-7c0-4-3-7-7-7z" />
-                <path d="M12 16v6" />
-                <path d="M8 14l-2 2" />
-                <path d="M16 14l2 2" />
-              </svg>
+            {/* Decorative element */}
+            <div className="mb-8 text-[--gold]">
+              <div className="text-[#6B7A3C]">
+                <Flourish className="w-60 h-16" />
+              </div>
             </div>
             <h2 className="text-4xl font-serif italic mb-8 text-center text-gray-800">
               Confirme sua Presença
@@ -177,24 +145,13 @@ export default async function HomePage() {
       </section>
 
       {/* Gifts Section */}
-      {/* Gifts Section */}
       <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
-            {/* Decorative leaf element */}
-            <div className="mb-4">
-              <svg
-                className="w-12 h-12 mx-auto text-gray-400"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1"
-              >
-                <path d="M12 2C8 2 5 5 5 9c0 4 3 7 7 7s7-3 7-7c0-4-3-7-7-7z" />
-                <path d="M12 16v6" />
-                <path d="M8 14l-2 2" />
-                <path d="M16 14l2 2" />
-              </svg>
+            <div className="mb-8 text-[--gold]">
+              <div className="text-[#6B7A3C]">
+                <Flourish className="w-60 h-16" />
+              </div>
             </div>
 
             <h2 className="text-4xl font-serif italic mb-6 text-gray-800">
@@ -257,19 +214,10 @@ export default async function HomePage() {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             {/* Decorative leaf element */}
-            <div className="mb-8 text-center">
-              <svg
-                className="w-12 h-12 mx-auto text-gray-400"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1"
-              >
-                <path d="M12 2C8 2 5 5 5 9c0 4 3 7 7 7s7-3 7-7c0-4-3-7-7-7z" />
-                <path d="M12 16v6" />
-                <path d="M8 14l-2 2" />
-                <path d="M16 14l2 2" />
-              </svg>
+            <div className="mb-8 text-[--gold]">
+              <div className="text-[#6B7A3C]">
+                <Flourish className="w-60 h-16" />
+              </div>
             </div>
             <div className="text-center mb-8">
               <h2 className="text-4xl font-serif italic mb-4 text-gray-800">
@@ -292,19 +240,11 @@ export default async function HomePage() {
       {/* Footer */}
       <footer className="bg-white py-12 border-t border-gray-200">
         <div className="container mx-auto px-4 text-center">
-          <div className="mb-4">
-            <svg
-              className="w-8 h-8 mx-auto text-gray-400"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1"
-            >
-              <path d="M12 2C8 2 5 5 5 9c0 4 3 7 7 7s7-3 7-7c0-4-3-7-7-7z" />
-              <path d="M12 16v6" />
-              <path d="M8 14l-2 2" />
-              <path d="M16 14l2 2" />
-            </svg>
+          {/* Decorative element */}
+          <div className="mb-8 text-[--gold]">
+            <div className="text-[#6B7A3C]">
+              <Flourish className="w-24 h-12" />
+            </div>
           </div>
           <p className="text-gray-500">
             Feito com amor para nosso dia especial
