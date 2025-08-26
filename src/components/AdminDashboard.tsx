@@ -64,6 +64,8 @@ interface SiteSettings {
   pix_link_url?: string;
   pix_instructions?: string;
   amazon_list_url?: string;
+  cover_image_url?: string;
+  about_text?: string;
 }
 
 interface AdminDashboardProps {
@@ -273,7 +275,7 @@ export function AdminDashboard({ initialData }: AdminDashboardProps) {
                       <img
                         src={editingPhoto?.image_url || newPhoto.image_url}
                         alt="Pré-visualização da foto"
-                        className="w-48 h-32 object-cover rounded border"
+                        className="w-48 h-32 object-contain bg-gray-100 rounded border"
                       />
                     </div>
                   )}
@@ -446,6 +448,46 @@ export function AdminDashboard({ initialData }: AdminDashboardProps) {
                     />
                   </div>
                 </div>
+
+                <div className="space-y-2">
+                  <Label>Imagem de Capa (Hero)</Label>
+                  <ImageUploader
+                    bucket="photos"
+                    label="Enviar Imagem de Capa"
+                    onUploaded={(url) =>
+                      setSettings((s) => ({ ...s, cover_image_url: url }))
+                    }
+                  />
+                  <Input
+                    placeholder="https://... (ou envie acima)"
+                    value={settings.cover_image_url || ""}
+                    onChange={(e) =>
+                      setSettings({
+                        ...settings,
+                        cover_image_url: e.target.value,
+                      })
+                    }
+                  />
+                  {!!settings.cover_image_url && (
+                    <img
+                      src={settings.cover_image_url || "/placeholder.svg"}
+                      alt="Pré-visualização da capa"
+                      className="mt-2 w-full max-w-xl aspect-video object-cover rounded border"
+                    />
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <Label>Texto Sobre o Evento</Label>
+                  <Textarea
+                    placeholder="Escreva o texto de apresentação do casal/evento…"
+                    value={settings.about_text || ""}
+                    onChange={(e) =>
+                      setSettings({ ...settings, about_text: e.target.value })
+                    }
+                  />
+                </div>
+
                 <div className="space-y-2">
                   <Label>URL da Lista da Amazon</Label>
                   <Input
