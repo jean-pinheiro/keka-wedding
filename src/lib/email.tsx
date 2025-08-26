@@ -155,7 +155,7 @@ export async function notifyRsvpAdmin(
       `,
     });
   } catch (error) {
-    console.error("Failed to send RSVP admin notification:", error);
+    console.error("Failed to send RSVP admin notification :", error);
     throw error;
   }
 }
