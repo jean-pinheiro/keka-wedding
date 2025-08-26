@@ -49,7 +49,7 @@ export async function sendRsvpGuestEmail(
                         </h3>
                         <p style="margin:6px 0;"><strong>Casal:</strong> Jessica e Artur</p>
                         <p style="margin:6px 0;"><strong>Data:</strong> 03/10/2025</p>
-                        <p style="margin:6px 0;"><strong>Local:</strong> [Local do casamento]</p>
+                        <p style="margin:6px 0;"><strong>Local:</strong><a href="https://maps.app.goo.gl/Eyf71JQ9kza7rurm6" style="text-decoration:none"> R. Tereza Cristina, 1976 - Benfica, Fortaleza - CE, 60015-141</a></p>
                       </div>
 
                       <p style="margin:16px 0 6px 0;">
