@@ -24,49 +24,50 @@ export async function sendRsvpGuestEmail(
           <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
             <tr>
               <td align="center" style="padding:28px 16px;">
-                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:640px;background:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 6px 24px rgba(0,0,0,0.06);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;">
-                  <!-- Header -->
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:640px;background:#ffffff;box-shadow:0 6px 24px rgba(0,0,0,0.06);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;">
+                  
+                  <!-- Title -->
                   <tr>
-                    <td style="background:#535935;padding:18px 24px;">
-                      <h1 style="margin:0;font:700 20px/1.2 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#fff;">
+                    <td style="padding:32px 24px 16px 24px;text-align:center;">
+                      <h1 style="margin:0;font-family:Ainslay, Georgia, serif;font-size:28px;line-height:1.3;color:#535935;">
                         Obrigado por confirmar sua presença!
                       </h1>
                     </td>
                   </tr>
-      
+
                   <!-- Body -->
                   <tr>
-                    <td style="padding:24px 28px;color:#333;">
+                    <td style="padding:0 28px 24px 28px;color:#333;">
                       <p style="margin:0 0 14px 0;">Olá <strong>${firstName} ${lastName}</strong>,</p>
                       <p style="margin:0 0 18px 0;">
                         Ficamos muito felizes em saber que você estará presente no nosso casamento!
                       </p>
-      
-                      <div style="background:#faf6ef;border:1px solid #53593520;padding:16px 18px;border-radius:12px;margin:16px 0 12px 0;">
+
+                      <div style="background:#faf6ef;border:1px solid #e5e7eb;padding:16px 18px;border-radius:12px;margin:16px 0 12px 0;">
                         <h3 style="margin:0 0 10px 0;color:#535935;font:700 16px/1.3 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;">
                           Detalhes do Evento
                         </h3>
                         <p style="margin:6px 0;"><strong>Casal:</strong> Jessica e Artur</p>
                         <p style="margin:6px 0;"><strong>Data:</strong> 03/10/2025</p>
-                        <p style="margin:6px 0;"><strong>Local:</strong> (veja no site)</p>
+                        <p style="margin:6px 0;"><strong>Local:</strong> [Local do casamento]</p>
                       </div>
-      
+
                       <p style="margin:16px 0 6px 0;">
-                        Se quiser, confira nossa lista de presentes ou contribua via Pix diretamente pelo site.
+                        Você também pode conferir nossa lista de presentes e outras informações no site.
                       </p>
-      
+
                       <div style="text-align:center;margin-top:26px;">
                         <a href="${
                           process.env.NEXT_PUBLIC_SITE_URL ||
                           "http://localhost:3000"
                         }"
-                           style="background:#C96E2D;color:#fff;text-decoration:none;padding:12px 20px;border-radius:10px;display:inline-block;">
+                          style="background:#C96E2D;color:#fff;text-decoration:none;padding:12px 24px;border-radius:10px;display:inline-block;font-weight:600;">
                           Visitar Site do Casamento
                         </a>
                       </div>
-      
-                      <p style="margin:28px 0 0 0;font-size:12px;color:#8b8b8b;text-align:center;">
-                        Com amor, Jessica & Artur
+
+                      <p style="margin:28px 0 0 0;font-size:14px;color:#535935;text-align:center;font-style:italic;">
+                        Com carinho,<br> Jessica & Artur ❤️
                       </p>
                     </td>
                   </tr>
@@ -76,7 +77,7 @@ export async function sendRsvpGuestEmail(
           </table>
         </body>
       </html>
-      `,
+`,
     });
   } catch (error) {
     console.error("Failed to send RSVP guest email:", error);
