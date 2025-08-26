@@ -18,36 +18,64 @@ export async function sendRsvpGuestEmail(
       to: email,
       subject: "Confirmação de Presença - Casamento Jessica e Artur",
       html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-          <h2 style="color: #be185d; text-align: center;">Obrigado por confirmar sua presença!</h2>
-          
-          <p>Olá ${firstName} ${lastName},</p>
-          
-          <p>Ficamos muito felizes em saber que você estará presente no nosso casamento!</p>
-          
-          <div style="background-color: #fdf2f8; padding: 20px; border-radius: 8px; margin: 20px 0;">
-            <h3 style="color: #be185d; margin-top: 0;">Detalhes do Evento:</h3>
-            <p><strong>Casal:</strong> Jessica e Artur</p>
-            <p><strong>Data:</strong> [Data do casamento]</p>
-            <p><strong>Local:</strong> [Local do casamento]</p>
-          </div>
-          
-          <p>Não esqueça de conferir nossa lista de presentes no site!</p>
-          
-          <p style="text-align: center; margin-top: 30px;">
-            <a href="${
-              process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
-            }" 
-               style="background-color: #be185d; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px;">
-              Visitar Site do Casamento
-            </a>
-          </p>
-          
-          <p style="margin-top: 30px; color: #666; font-size: 14px;">
-            Com amor,<br>
-            Jessica e Artur ❤️
-          </p>
-        </div>
+      <!doctype html>
+      <html lang="pt-BR">
+        <body style="margin:0;padding:0;background:#f6f7f9;">
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+            <tr>
+              <td align="center" style="padding:28px 16px;">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:640px;background:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 6px 24px rgba(0,0,0,0.06);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;">
+                  <!-- Header -->
+                  <tr>
+                    <td style="background:#535935;padding:18px 24px;">
+                      <h1 style="margin:0;font:700 20px/1.2 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#fff;">
+                        Obrigado por confirmar sua presença!
+                      </h1>
+                    </td>
+                  </tr>
+      
+                  <!-- Body -->
+                  <tr>
+                    <td style="padding:24px 28px;color:#333;">
+                      <p style="margin:0 0 14px 0;">Olá <strong>${firstName} ${lastName}</strong>,</p>
+                      <p style="margin:0 0 18px 0;">
+                        Ficamos muito felizes em saber que você estará presente no nosso casamento!
+                      </p>
+      
+                      <div style="background:#faf6ef;border:1px solid #53593520;padding:16px 18px;border-radius:12px;margin:16px 0 12px 0;">
+                        <h3 style="margin:0 0 10px 0;color:#535935;font:700 16px/1.3 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;">
+                          Detalhes do Evento
+                        </h3>
+                        <p style="margin:6px 0;"><strong>Casal:</strong> Jessica e Artur</p>
+                        <p style="margin:6px 0;"><strong>Data:</strong> 03/10/2025</p>
+                        <p style="margin:6px 0;"><strong>Local:</strong> (veja no site)</p>
+                      </div>
+      
+                      <p style="margin:16px 0 6px 0;">
+                        Se quiser, confira nossa lista de presentes ou contribua via Pix diretamente pelo site.
+                      </p>
+      
+                      <div style="text-align:center;margin-top:26px;">
+                        <a href="${
+                          process.env.NEXT_PUBLIC_SITE_URL ||
+                          "http://localhost:3000"
+                        }"
+                           style="background:#C96E2D;color:#fff;text-decoration:none;padding:12px 20px;border-radius:10px;display:inline-block;">
+                          Visitar Site do Casamento
+                        </a>
+                      </div>
+      
+                      <p style="margin:28px 0 0 0;font-size:12px;color:#8b8b8b;text-align:center;">
+                        Com amor, Jessica & Artur
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </body>
+      </html>
       `,
     });
   } catch (error) {
@@ -72,195 +100,62 @@ export async function notifyRsvpAdmin(
       to: process.env.ADMIN_EMAIL!,
       subject: "Nova Confirmação de Presença - Casamento",
       html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-          <h2 style="color: #be185d;">Nova Confirmação de Presença</h2>
-          
-          <div style="background-color: #f9fafb; padding: 20px; border-radius: 8px; border-left: 4px solid #be185d;">
-            <h3 style="margin-top: 0;">Detalhes do Convidado:</h3>
-            <p><strong>Nome:</strong> ${firstName} ${lastName}</p>
-            <p><strong>E-mail:</strong> ${email}</p>
-            <p><strong>Status:</strong> Confirmado</p>
-            <p><strong>Data:</strong> ${new Date().toLocaleString("pt-BR")}</p>
-          </div>
-          
-          <p style="margin-top: 20px;">
-            <a href="${
-              process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
-            }/admin" 
-               style="background-color: #be185d; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px;">
-              Ver Painel Admin
-            </a>
-          </p>
-        </div>
+      <!doctype html>
+      <html lang="pt-BR">
+        <body style="margin:0;padding:0;background:#f6f7f9;">
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+            <tr>
+              <td align="center" style="padding:28px 16px;">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:640px;background:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 6px 24px rgba(0,0,0,0.06);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;">
+                  <!-- Header -->
+                  <tr>
+                    <td style="background:#535935;padding:18px 24px;">
+                      <h1 style="margin:0;font:700 20px/1.2 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#fff;">
+                        Nova Confirmação de Presença
+                      </h1>
+                    </td>
+                  </tr>
+      
+                  <!-- Body -->
+                  <tr>
+                    <td style="padding:24px 28px;color:#333;">
+                      <div style="background:#f7f9fb;border:1px solid #53593520;padding:16px 18px;border-radius:12px;margin:8px 0 12px 0;">
+                        <h3 style="margin:0 0 10px 0;color:#535935;font:700 16px/1.3 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;">
+                          Detalhes do Convidado
+                        </h3>
+                        <p style="margin:6px 0;"><strong>Nome:</strong> ${firstName} ${lastName}</p>
+                        <p style="margin:6px 0;"><strong>E-mail:</strong> <a href="mailto:${email}" style="color:#C96E2D;text-decoration:none;">${email}</a></p>
+                        <p style="margin:6px 0;"><strong>Status:</strong> Confirmado</p>
+                        <p style="margin:6px 0;"><strong>Data:</strong> ${new Date().toLocaleString(
+                          "pt-BR"
+                        )}</p>
+                      </div>
+      
+                      <div style="text-align:center;margin-top:26px;">
+                        <a href="${
+                          (process.env.NEXT_PUBLIC_SITE_URL ||
+                            "http://localhost:3000") + "/admin"
+                        }"
+                           style="background:#C96E2D;color:#fff;text-decoration:none;padding:12px 20px;border-radius:10px;display:inline-block;">
+                          Ver Painel Admin
+                        </a>
+                      </div>
+      
+                      <p style="margin:28px 0 0 0;font-size:12px;color:#8b8b8b;text-align:center;">
+                        Enviado automaticamente pelo site
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </body>
+      </html>
       `,
     });
   } catch (error) {
     console.error("Failed to send RSVP admin notification:", error);
-    throw error;
-  }
-}
-
-export async function sendGiftReservationEmail(
-  guestEmail: string,
-  guestName: string,
-  giftName: string,
-  giftPrice: number
-) {
-  if (!process.env.RESEND_API_KEY || !process.env.OWNER_EMAIL) {
-    console.warn("Email service not configured");
-    return;
-  }
-
-  try {
-    await resend.emails.send({
-      from: process.env.OWNER_EMAIL,
-      to: guestEmail,
-      subject: "Presente Reservado - Casamento Jessica e Artur",
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-          <h2 style="color: #be185d; text-align: center;">Presente Reservado com Sucesso!</h2>
-          
-          <p>Olá ${guestName},</p>
-          
-          <p>Obrigado por reservar um presente para o nosso casamento!</p>
-          
-          <div style="background-color: #fdf2f8; padding: 20px; border-radius: 8px; margin: 20px 0;">
-            <h3 style="color: #be185d; margin-top: 0;">Detalhes da Reserva:</h3>
-            <p><strong>Presente:</strong> ${giftName}</p>
-            <p><strong>Valor:</strong> R$ ${giftPrice.toFixed(2)}</p>
-            <p><strong>Reservado por:</strong> ${guestName}</p>
-            <p><strong>Data:</strong> ${new Date().toLocaleString("pt-BR")}</p>
-          </div>
-          
-          <p>Ficamos muito gratos pela sua generosidade!</p>
-          
-          <p style="margin-top: 30px; color: #666; font-size: 14px;">
-            Com amor,<br>
-            Jessica e Artur ❤️
-          </p>
-        </div>
-      `,
-    });
-  } catch (error) {
-    console.error("Failed to send gift reservation email:", error);
-    throw error;
-  }
-}
-
-export async function notifyGiftReservationAdmin(
-  guestName: string,
-  guestEmail: string,
-  giftName: string,
-  giftPrice: number
-) {
-  if (!process.env.RESEND_API_KEY || !process.env.OWNER_EMAIL) {
-    console.warn("Email service not configured");
-    return;
-  }
-
-  try {
-    await resend.emails.send({
-      from: process.env.OWNER_EMAIL,
-      to: process.env.ADMIN_EMAIL!,
-      subject: "Novo Presente Reservado - Casamento",
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-          <h2 style="color: #be185d;">Novo Presente Reservado</h2>
-          
-          <div style="background-color: #f9fafb; padding: 20px; border-radius: 8px; border-left: 4px solid #be185d;">
-            <h3 style="margin-top: 0;">Detalhes da Reserva:</h3>
-            <p><strong>Presente:</strong> ${giftName}</p>
-            <p><strong>Valor:</strong> R$ ${giftPrice.toFixed(2)}</p>
-            <p><strong>Reservado por:</strong> ${guestName}</p>
-            <p><strong>E-mail:</strong> ${guestEmail}</p>
-            <p><strong>Data:</strong> ${new Date().toLocaleString("pt-BR")}</p>
-          </div>
-          
-          <p style="margin-top: 20px;">
-            <a href="${
-              process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
-            }/admin" 
-               style="background-color: #be185d; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px;">
-              Ver Painel Admin
-            </a>
-          </p>
-        </div>
-      `,
-    });
-  } catch (error) {
-    console.error("Failed to send gift reservation admin notification:", error);
-    throw error;
-  }
-}
-
-export async function sendGiftReservedEmail(
-  to: string,
-  giftName: string,
-  guestName: string,
-  opts?: {
-    pixInfo?: { qrUrl?: string; linkUrl?: string; instructions?: string };
-  }
-) {
-  if (!process.env.RESEND_API_KEY || !process.env.OWNER_EMAIL) {
-    console.warn("Email service not configured");
-    return;
-  }
-
-  const pixSection = opts?.pixInfo
-    ? `
-    <div style="background-color: #f0f9ff; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #0ea5e9;">
-      <h3 style="color: #0ea5e9; margin-top: 0;">Informações para Pagamento via Pix</h3>
-      <p>${
-        opts.pixInfo.instructions ||
-        "Use os dados abaixo para fazer o pagamento via Pix"
-      }</p>
-      ${
-        opts.pixInfo.qrUrl
-          ? `<p><img src="${opts.pixInfo.qrUrl}" alt="QR Code Pix" style="max-width: 200px; height: auto;"></p>`
-          : ""
-      }
-      ${
-        opts.pixInfo.linkUrl
-          ? `<p><a href="${opts.pixInfo.linkUrl}" style="color: #0ea5e9; text-decoration: underline;">Link para Pagamento Pix</a></p>`
-          : ""
-      }
-    </div>
-  `
-    : "";
-
-  try {
-    await resend.emails.send({
-      from: process.env.OWNER_EMAIL,
-      to: to,
-      subject: "Presente Reservado - Casamento Jessica e Artur",
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-          <h2 style="color: #be185d; text-align: center;">Presente Reservado com Sucesso!</h2>
-          
-          <p>Olá ${guestName},</p>
-          
-          <p>Obrigado por reservar um presente para o nosso casamento!</p>
-          
-          <div style="background-color: #fdf2f8; padding: 20px; border-radius: 8px; margin: 20px 0;">
-            <h3 style="color: #be185d; margin-top: 0;">Detalhes da Reserva:</h3>
-            <p><strong>Presente:</strong> ${giftName}</p>
-            <p><strong>Reservado por:</strong> ${guestName}</p>
-            <p><strong>Data:</strong> ${new Date().toLocaleString("pt-BR")}</p>
-          </div>
-          
-          ${pixSection}
-          
-          <p>Ficamos muito gratos pela sua generosidade!</p>
-          
-          <p style="margin-top: 30px; color: #666; font-size: 14px;">
-            Com amor,<br>
-            Jessica e Artur ❤️
-          </p>
-        </div>
-      `,
-    });
-  } catch (error) {
-    console.error("Failed to send gift reserved email:", error);
     throw error;
   }
 }
