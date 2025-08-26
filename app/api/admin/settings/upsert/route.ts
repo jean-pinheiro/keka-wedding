@@ -16,7 +16,7 @@ export async function POST(req: Request) {
     maps_embed_url: payload.maps_embed_url ?? null,
     pix_qr_url: payload.pix_qr_url ?? null,
     pix_link_url: payload.pix_link_url ?? null,
-    pix_instructions: payload.pix_instructions ?? null,
+    about_text: payload.about_text ?? null,
     amazon_list_url: payload.amazon_list_url ?? null, // 👈 new
   };
 
