@@ -101,27 +101,47 @@ export function Carousel({
             <div key={photo.id} className="flex-[0_0_100%] min-w-0">
               <div
                 className={[
-                  "relative w-full",
+                  "relative w-full overflow-hidden",
                   isHero
                     ? "h-screen"
-                    : // responsive stage that keeps aspect without cropping
-                      "min-h-[320px] h-[60vh] max-h-[800px] bg-black/5 flex items-center justify-center",
+                    : "min-h-[320px] h-[60vh] max-h-[800px] rounded-lg",
                 ].join(" ")}
               >
-                <img
-                  src={
-                    photo.image_url ||
-                    "/placeholder.svg?height=800&width=1200&query=elegant wedding photo"
-                  }
-                  alt={photo.caption || "Foto do casamento"}
+                {/* Blurred backdrop (non-hero only) */}
+                {!isHero && (
+                  <img
+                    src={photo.image_url}
+                    alt=""
+                    aria-hidden="true"
+                    className="absolute inset-0 w-full h-full object-cover blur-lg scale-110 opacity-60"
+                  />
+                )}
+
+                {/* Foreground image */}
+                <div
                   className={
                     isHero
-                      ? "absolute inset-0 w-full h-full object-cover"
-                      : "max-h-full max-w-full object-contain"
+                      ? "absolute inset-0"
+                      : "relative z-10 w-full h-full flex items-center justify-center"
                   }
-                />
+                >
+                  <img
+                    src={
+                      photo.image_url ||
+                      "/placeholder.svg?height=800&width=1200&query=elegant wedding photo"
+                    }
+                    alt={photo.caption || "Foto do casamento"}
+                    className={
+                      isHero
+                        ? "w-full h-full object-cover"
+                        : "max-w-full max-h-full object-contain"
+                    }
+                  />
+                </div>
+
+                {/* Optional caption */}
                 {photo.caption && !isHero && (
-                  <div className="absolute bottom-0 left-0 right-0 bg-black/50 text-white p-3">
+                  <div className="absolute bottom-0 left-0 right-0 z-20 bg-black/45 text-white p-3">
                     <p className="text-center text-sm">{photo.caption}</p>
                   </div>
                 )}

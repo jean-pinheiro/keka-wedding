@@ -64,6 +64,8 @@ interface SiteSettings {
   pix_link_url?: string;
   pix_instructions?: string;
   amazon_list_url?: string;
+  cover_image_url?: string;
+  about_text?: string;
 }
 
 interface AdminDashboardProps {
@@ -88,48 +90,6 @@ export function AdminDashboard({ initialData }: AdminDashboardProps) {
   const handleLogout = () => {
     document.cookie = "admin=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     window.location.reload();
-  };
-
-  const saveGift = async (gift: Partial<Gift>) => {
-    try {
-      const res = await fetch("/api/admin/gifts/upsert", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(gift),
-      });
-      const json = await res.json();
-      if (!res.ok) throw new Error(json.error || "Erro ao salvar presente");
-
-      const saved: Gift = json.gift;
-      setGifts((prev) => {
-        const i = prev.findIndex((g) => g.id === saved.id);
-        if (i >= 0) {
-          const copy = [...prev];
-          copy[i] = saved;
-          return copy;
-        }
-        return [saved, ...prev];
-      });
-      setEditingGift(null);
-      setNewGift({});
-      toast.success("Presente salvo");
-    } catch (e: any) {
-      toast.error(e?.message || "Falha ao salvar presente");
-      alert(e.message || "Falha ao salvar presente");
-    }
-  };
-
-  const deleteGift = async (id: string) => {
-    if (!confirm("Excluir este presente?")) return;
-    const res = await fetch("/api/admin/gifts/delete", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id }),
-    });
-    const json = await res.json();
-    if (!res.ok) return alert(json.error || "Falha ao excluir");
-    setGifts(gifts.filter((g) => g.id !== id));
-    toast.success("Presente excluído");
   };
 
   const savePhoto = async (photo: Partial<Photo>) => {
@@ -447,6 +407,44 @@ export function AdminDashboard({ initialData }: AdminDashboardProps) {
                   </div>
                 </div>
                 <div className="space-y-2">
+                  <Label>Imagem de Capa (Hero)</Label>
+                  <ImageUploader
+                    bucket="photos"
+                    label="Enviar Imagem de Capa"
+                    onUploaded={(url) =>
+                      setSettings((s) => ({ ...s, cover_image_url: url }))
+                    }
+                  />
+                  <Input
+                    placeholder="https://... (ou envie acima)"
+                    value={settings.cover_image_url || ""}
+                    onChange={(e) =>
+                      setSettings({
+                        ...settings,
+                        cover_image_url: e.target.value,
+                      })
+                    }
+                  />
+                  {!!settings.cover_image_url && (
+                    <img
+                      src={settings.cover_image_url || "/placeholder.svg"}
+                      alt="Pré-visualização da capa"
+                      className="mt-2 w-full max-w-xl aspect-video object-cover rounded border"
+                    />
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <Label>Texto Sobre o Evento</Label>
+                  <Textarea
+                    placeholder="Escreva o texto de apresentação do casal/evento…"
+                    value={settings.about_text || ""}
+                    onChange={(e) =>
+                      setSettings({ ...settings, about_text: e.target.value })
+                    }
+                  />
+                </div>
+                <div className="space-y-2">
                   <Label>URL da Lista da Amazon</Label>
                   <Input
                     placeholder="https://www.amazon.com.br/hz/wishlist/ls/..."
@@ -485,16 +483,7 @@ export function AdminDashboard({ initialData }: AdminDashboardProps) {
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label>URL do QR Code Pix Global</Label>
-                    <Input
-                      value={settings.pix_qr_url || ""}
-                      onChange={(e) =>
-                        setSettings({ ...settings, pix_qr_url: e.target.value })
-                      }
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label>URL do Link Pix Global</Label>
+                    <Label>URL do Link Pix</Label>
                     <Input
                       value={settings.pix_link_url || ""}
                       onChange={(e) =>
@@ -505,18 +494,6 @@ export function AdminDashboard({ initialData }: AdminDashboardProps) {
                       }
                     />
                   </div>
-                </div>
-                <div className="space-y-2">
-                  <Label>Instruções do Pix</Label>
-                  <Textarea
-                    value={settings.pix_instructions || ""}
-                    onChange={(e) =>
-                      setSettings({
-                        ...settings,
-                        pix_instructions: e.target.value,
-                      })
-                    }
-                  />
                 </div>
                 <Button onClick={saveSettings} disabled={savingSettings}>
                   <Save className="mr-2 h-4 w-4" />
