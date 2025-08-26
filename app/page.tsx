@@ -18,6 +18,8 @@ interface SiteSettings {
   maps_embed_url?: string;
   cover_title?: string;
   cover_subtitle?: string;
+  pix_link_url?: string; // if not already included here
+  amazon_list_url?: string; // 👈 new
 }
 
 async function getPhotos(): Promise<Photo[]> {
@@ -175,6 +177,7 @@ export default async function HomePage() {
       </section>
 
       {/* Gifts Section */}
+      {/* Gifts Section */}
       <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
@@ -193,24 +196,58 @@ export default async function HomePage() {
                 <path d="M16 14l2 2" />
               </svg>
             </div>
-            <h2 className="text-4xl font-serif italic mb-8 text-gray-800">
+
+            <h2 className="text-4xl font-serif italic mb-6 text-gray-800">
               Lista de Presentes
             </h2>
+
             <p className="text-gray-600 leading-relaxed text-lg mb-8">
               Escolha um presente especial para nos ajudar a começar nossa nova
               vida juntos. Sua presença já é o maior presente, mas se desejar
-              nos presentear, ficamos muito gratos.
+              nos presentear, ficamos muito gratos. Este é o link para a nossa
+              lista na Amazon; ou, se preferir presentear de outra forma, também
+              há a opção de contribuir via Pix. ❤️
             </p>
-            <Button
-              asChild
-              size="lg"
-              className="bg-gray-800 hover:bg-gray-900 text-white px-8 py-3"
-            >
-              <Link href="/gifts">
-                <Gift className="mr-2 h-5 w-5" />
-                Ver Lista de Presentes
-              </Link>
-            </Button>
+
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+              {/* Amazon list (from DB settings) */}
+              {!!settings.amazon_list_url && (
+                <Button
+                  asChild
+                  size="lg"
+                  className="bg-gray-800 hover:bg-gray-900 text-white"
+                >
+                  <Link
+                    href={settings.amazon_list_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Gift className="mr-2 h-5 w-5" />
+                    Abrir lista na Amazon
+                  </Link>
+                </Button>
+              )}
+
+              {/* Pix link (from DB settings) */}
+              {!!settings.pix_link_url && (
+                <Button asChild size="lg" variant="outline">
+                  <Link
+                    href={settings.pix_link_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Contribuir via Pix
+                  </Link>
+                </Button>
+              )}
+            </div>
+
+            {/* Optional helper when neither is configured */}
+            {!settings.amazon_list_url && !settings.pix_link_url && (
+              <p className="text-sm text-gray-500 mt-6">
+                Em breve adicionaremos as opções de presente 😊
+              </p>
+            )}
           </div>
         </div>
       </section>

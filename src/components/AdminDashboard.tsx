@@ -63,6 +63,7 @@ interface SiteSettings {
   pix_qr_url?: string;
   pix_link_url?: string;
   pix_instructions?: string;
+  amazon_list_url?: string;
 }
 
 interface AdminDashboardProps {
@@ -210,254 +211,11 @@ export function AdminDashboard({ initialData }: AdminDashboardProps) {
         </div>
 
         <Tabs defaultValue="gifts" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="gifts">Presentes</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="photos">Fotos</TabsTrigger>
             <TabsTrigger value="rsvps">Confirmações</TabsTrigger>
             <TabsTrigger value="settings">Configurações</TabsTrigger>
           </TabsList>
-
-          <TabsContent value="gifts" className="space-y-6">
-            <div className="flex justify-between items-center">
-              <h2 className="text-2xl font-semibold">Gerenciar Presentes</h2>
-              <Button
-                onClick={() => setNewGift({ name: "", status: "available" })}
-              >
-                <Plus className="mr-2 h-4 w-4" />
-                Adicionar Presente
-              </Button>
-            </div>
-
-            {(newGift.name !== undefined || editingGift) && (
-              <Card>
-                <CardHeader>
-                  <CardTitle>
-                    {editingGift
-                      ? "Editar Presente"
-                      : "Adicionar Novo Presente"}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label>Nome</Label>
-                      <Input
-                        value={editingGift?.name || newGift.name || ""}
-                        onChange={(e) =>
-                          editingGift
-                            ? setEditingGift({
-                                ...editingGift,
-                                name: e.target.value,
-                              })
-                            : setNewGift({ ...newGift, name: e.target.value })
-                        }
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Status</Label>
-                      <Select
-                        value={
-                          editingGift?.status || newGift.status || "available"
-                        }
-                        onValueChange={(value) =>
-                          editingGift
-                            ? setEditingGift({
-                                ...editingGift,
-                                status: value as Gift["status"],
-                              })
-                            : setNewGift({
-                                ...newGift,
-                                status: value as Gift["status"],
-                              })
-                        }
-                      >
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="available">Disponível</SelectItem>
-                          <SelectItem value="reserved">Reservado</SelectItem>
-                          <SelectItem value="paid">Pago</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <Label>Descrição</Label>
-                    <Textarea
-                      value={
-                        editingGift?.description || newGift.description || ""
-                      }
-                      onChange={(e) =>
-                        editingGift
-                          ? setEditingGift({
-                              ...editingGift,
-                              description: e.target.value,
-                            })
-                          : setNewGift({
-                              ...newGift,
-                              description: e.target.value,
-                            })
-                      }
-                    />
-                  </div>
-                  <ImageUploader
-                    bucket="gifts"
-                    label="Enviar Imagem do Presente"
-                    onUploaded={(url) =>
-                      editingGift
-                        ? setEditingGift({ ...editingGift, image_url: url })
-                        : setNewGift({ ...newGift, image_url: url })
-                    }
-                  />
-                  <div className="space-y-2">
-                    <Label>URL da Imagem (ou envie acima)</Label>
-                    <Input
-                      value={editingGift?.image_url || newGift.image_url || ""}
-                      onChange={(e) =>
-                        editingGift
-                          ? setEditingGift({
-                              ...editingGift,
-                              image_url: e.target.value,
-                            })
-                          : setNewGift({
-                              ...newGift,
-                              image_url: e.target.value,
-                            })
-                      }
-                      placeholder="https://exemplo.com/imagem.jpg"
-                    />
-                  </div>
-                  {(editingGift?.image_url || newGift.image_url) && (
-                    <div className="space-y-2">
-                      <Label>Pré-visualização da Imagem</Label>
-                      <img
-                        src={editingGift?.image_url || newGift.image_url}
-                        alt="Pré-visualização do presente"
-                        className="w-32 h-32 object-cover rounded border"
-                      />
-                    </div>
-                  )}
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label>URL do QR Code Pix</Label>
-                      <Input
-                        value={
-                          editingGift?.pix_qr_url || newGift.pix_qr_url || ""
-                        }
-                        onChange={(e) =>
-                          editingGift
-                            ? setEditingGift({
-                                ...editingGift,
-                                pix_qr_url: e.target.value,
-                              })
-                            : setNewGift({
-                                ...newGift,
-                                pix_qr_url: e.target.value,
-                              })
-                        }
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label>URL do Link Pix</Label>
-                      <Input
-                        value={
-                          editingGift?.pix_link_url ||
-                          newGift.pix_link_url ||
-                          ""
-                        }
-                        onChange={(e) =>
-                          editingGift
-                            ? setEditingGift({
-                                ...editingGift,
-                                pix_link_url: e.target.value,
-                              })
-                            : setNewGift({
-                                ...newGift,
-                                pix_link_url: e.target.value,
-                              })
-                        }
-                      />
-                    </div>
-                  </div>
-                  <div className="flex gap-2">
-                    <Button onClick={() => saveGift(editingGift || newGift)}>
-                      <Save className="mr-2 h-4 w-4" />
-                      Salvar
-                    </Button>
-                    <Button
-                      variant="outline"
-                      onClick={() => {
-                        setEditingGift(null);
-                        setNewGift({});
-                      }}
-                    >
-                      <X className="mr-2 h-4 w-4" />
-                      Cancelar
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-
-            <div className="grid gap-4">
-              {gifts.map((gift) => (
-                <Card key={gift.id}>
-                  <CardContent className="pt-6">
-                    <div className="flex justify-between items-start">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-2">
-                          <h3 className="font-semibold">{gift.name}</h3>
-                          <Badge
-                            variant={
-                              gift.status === "paid"
-                                ? "default"
-                                : gift.status === "reserved"
-                                ? "secondary"
-                                : "outline"
-                            }
-                          >
-                            {gift.status === "available"
-                              ? "Disponível"
-                              : gift.status === "reserved"
-                              ? "Reservado"
-                              : "Pago"}
-                          </Badge>
-                        </div>
-                        {gift.description && (
-                          <p className="text-sm text-muted-foreground mb-2">
-                            {gift.description}
-                          </p>
-                        )}
-                        {gift.reserved_by_name && (
-                          <p className="text-sm">
-                            Reservado por: {gift.reserved_by_name} (
-                            {gift.reserved_by_email})
-                          </p>
-                        )}
-                      </div>
-                      <div className="flex gap-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => setEditingGift(gift)}
-                        >
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => deleteGift(gift.id)}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </TabsContent>
 
           <TabsContent value="photos" className="space-y-6">
             <div className="flex justify-between items-center">
@@ -687,6 +445,19 @@ export function AdminDashboard({ initialData }: AdminDashboardProps) {
                       }
                     />
                   </div>
+                </div>
+                <div className="space-y-2">
+                  <Label>URL da Lista da Amazon</Label>
+                  <Input
+                    placeholder="https://www.amazon.com.br/hz/wishlist/ls/..."
+                    value={settings.amazon_list_url || ""}
+                    onChange={(e) =>
+                      setSettings({
+                        ...settings,
+                        amazon_list_url: e.target.value,
+                      })
+                    }
+                  />
                 </div>
                 <div className="space-y-2">
                   <Label>Endereço do Local</Label>
