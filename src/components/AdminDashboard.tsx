@@ -273,7 +273,7 @@ export function AdminDashboard({ initialData }: AdminDashboardProps) {
                       <img
                         src={editingPhoto?.image_url || newPhoto.image_url}
                         alt="Pré-visualização da foto"
-                        className="w-48 h-32 object-cover rounded border"
+                        className="w-48 h-32 object-contain bg-muted rounded border"
                       />
                     </div>
                   )}

@@ -61,11 +61,11 @@ export default function NavMenus() {
                   onClick={handleClick(item.id)}
                   aria-current={isActive ? "page" : undefined}
                   className={[
-                    "inline-flex items-center w-36 h-15 rounded-full select-none",
+                    "inline-flex items-center justify-center w-36 h-14 rounded-full select-none",
                     "transition-all duration-200 transform-gpu",
                     scaleClass,
                     "hover:scale-110 active:scale-115",
-                    "pl-8 text-3xl font-bold font-ainslay",
+                    "text-3xl font-bold font-ainslay",
                     "bg-white border border-white/30 backdrop-blur-sm shadow-sm",
                   ].join(" ")}
                   style={{ color }}
