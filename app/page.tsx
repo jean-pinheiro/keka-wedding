@@ -249,8 +249,45 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Location Section */}
-      <section id="local" className="py-15 bg-white">
+      {/* Reception Section */}
+      <section id="recepcao" className="py-15 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto">
+            {/* Decorative leaf element */}
+            <div className="mb-8 text-[--gold]">
+              <div className="text-[#6B7A3C]">
+                <Flourish className="w-60 h-16" />
+              </div>
+            </div>
+            <div className="text-center mb-8">
+              <h2
+                className="text-7xl font-ainslay font-bold mb-4 text-gray-800"
+                style={{ color: " #535935" }}
+              >
+                Recepção
+              </h2>
+              <p className="text-gray-600 leading-relaxed text-lg ">
+                Com muita alegria, convidamos você para celebrar conosco no dia
+                03 de outubro de 2025, a partir das 20h, na R. Tereza Cristina,
+                1976 – Benfica. Queremos uma noite leve, descontraída e cheia de
+                festa, por isso sugerimos trajes casuais e confortáveis. Apenas
+                pedimos que o branco seja reservado para a noiva.
+              </p>
+              {settings.location_address && (
+                <p className="text-gray-600 font-bold text-lg m-8">
+                  {settings.location_address}
+                </p>
+              )}
+            </div>
+            <MapEmbed
+              embedUrl={settings.maps_embed_url}
+              address={settings.location_address}
+            />
+          </div>
+        </div>
+      </section>
+
+      <section id="cerimonia" className="py-15 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             {/* Decorative leaf element */}
@@ -266,16 +303,15 @@ export default async function HomePage() {
               >
                 Cerimônia
               </h2>
-              {settings.location_address && (
-                <p className="text-gray-600 text-lg">
-                  {settings.location_address}
-                </p>
-              )}
+              <p className="text-gray-600 text-lg">
+                Nosso casamento será oficializado no Cartório Mucuripe. Como o
+                espaço comporta apenas 20 pessoas, este momento ficará restrito
+                aos familiares mais próximos e padrinhos. Se você gostaria de
+                participar da celebração simbólica, entre em contato
+                (jessicadasilva.jsp@gmail.com) com a noiva para verificar a
+                disponibilidade de vagas.
+              </p>
             </div>
-            <MapEmbed
-              embedUrl={settings.maps_embed_url}
-              address={settings.location_address}
-            />
           </div>
         </div>
       </section>

@@ -10,7 +10,8 @@ const ITEMS: Item[] = [
   { id: "sobre", label: "Sobre" },
   { id: "confirme", label: "Confirme" },
   { id: "presentes", label: "Presentes" },
-  { id: "local", label: "Local" },
+  { id: "recepcao", label: "Recepção" },
+  { id: "cerimonia", label: "Cerimônia" },
 ];
 
 const ORANGE = "#C96E2D";
