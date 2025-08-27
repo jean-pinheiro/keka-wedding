@@ -197,11 +197,14 @@ export default async function HomePage() {
             </h2>
 
             <p className="text-gray-600 leading-relaxed text-lg mb-8">
-              Escolha um presente especial para nos ajudar a começar nossa nova
-              vida juntos. Sua presença já é o maior presente, mas se desejar
-              nos presentear, ficamos muito gratos. Este é o link para a nossa
-              lista na Amazon; ou, se preferir presentear de outra forma, também
-              há a opção de contribuir via Pix. ❤️
+              O maior presente será ter você celebrando esse dia ao nosso lado.
+              ❤️ Mas, se quiser nos presentear de alguma forma, ficaremos muito
+              gratos! Criamos uma lista na Amazon com algumas sugestões, mas a
+              forma que mais nos ajuda neste momento é a contribuição via Pix.
+            </p>
+            <p className="text-gray-600 leading-relaxed text-lg mb-8">
+              De qualquer jeito, o carinho e a presença de vocês é o que
+              realmente faz diferença em nossa nova etapa juntos. ✨
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-6">
