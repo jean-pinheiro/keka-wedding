@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- Interlocked rings (thicker stroke, larger overlap) -->
+  <circle cx="24" cy="38" r="16" stroke="#535935" stroke-width="6"/>
+  <circle cx="40" cy="26" r="16" stroke="#535935" stroke-width="6"/>
+
+  <!-- Tiny sparkle (brand orange, bigger now) -->
+  <path d="M50 10 l3 4 -3 4 -3-4 3-4Z" fill="#C96E2D" opacity="0.9"/>
+</svg>

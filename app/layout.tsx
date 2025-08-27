@@ -7,9 +7,11 @@ import "./globals.css";
 import { ainslay } from "@/src/lib/fonts";
 
 export const metadata: Metadata = {
-  title: "Nosso Casamento",
+  title: "Jéssica e Arthur",
   description: "Celebre conosco nosso dia especial",
-  generator: "v0.app",
+  icons: {
+    icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
+  },
 };
 
 export default function RootLayout({

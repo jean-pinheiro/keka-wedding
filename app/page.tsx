@@ -5,7 +5,7 @@ import { RsvpForm } from "@/src/components/RsvpForm";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Gift } from "lucide-react";
-import Flourish from "@/src/components/Flourish";
+import FlourishRings from "@/src/components/FlourishRings";
 import SideMenu from "@/src/components/SideMenu";
 import { ainslay } from "@/src/lib/fonts";
 interface Photo {
@@ -53,7 +53,7 @@ async function getSiteSettings(): Promise<SiteSettings> {
   if (!supabase) {
     console.log("Supabase not configured, returning default settings");
     return {
-      cover_title: "Nosso Casamento",
+      cover_title: "Jéssica e Arthur",
       cover_subtitle: "Celebre conosco nosso dia especial",
       location_address: "Local a ser definido",
     };
@@ -67,7 +67,7 @@ async function getSiteSettings(): Promise<SiteSettings> {
   if (error) {
     console.error("Error fetching site settings:", error);
     return {
-      cover_title: "Nosso Casamento",
+      cover_title: "Jéssica e Arthur",
       cover_subtitle: "Celebre conosco nosso dia especial",
       location_address: "Local a ser definido",
     };
@@ -120,7 +120,7 @@ export default async function HomePage() {
             {/* Decorative element */}
             <div className="mb-8 text-[--gold]">
               <div className="text-[#6B7A3C]">
-                <Flourish className="w-60 h-16" />
+                <FlourishRings className="w-70 h-16" />
               </div>
             </div>
             <h2
@@ -161,7 +161,7 @@ export default async function HomePage() {
             {/* Decorative element */}
             <div className="mb-8 text-[--gold]">
               <div className="text-[#6B7A3C]">
-                <Flourish className="w-60 h-16" />
+                <FlourishRings className="w-70 h-16" />
               </div>
             </div>
             <h2
@@ -185,7 +185,7 @@ export default async function HomePage() {
           <div className="max-w-3xl mx-auto text-center">
             <div className="mb-8 text-[--gold]">
               <div className="text-[#6B7A3C]">
-                <Flourish className="w-60 h-16" />
+                <FlourishRings className="w-70 h-16" />
               </div>
             </div>
 
@@ -256,7 +256,7 @@ export default async function HomePage() {
             {/* Decorative leaf element */}
             <div className="mb-8 text-[--gold]">
               <div className="text-[#6B7A3C]">
-                <Flourish className="w-60 h-16" />
+                <FlourishRings className="w-70 h-16" />
               </div>
             </div>
             <div className="text-center mb-8">
@@ -293,7 +293,7 @@ export default async function HomePage() {
             {/* Decorative leaf element */}
             <div className="mb-8 text-[--gold]">
               <div className="text-[#6B7A3C]">
-                <Flourish className="w-60 h-16" />
+                <FlourishRings className="w-70 h-16" />
               </div>
             </div>
             <div className="text-center mb-8">
@@ -327,11 +327,11 @@ export default async function HomePage() {
           {/* Decorative element */}
           <div className="mb-8 text-[--gold]">
             <div className="text-[#6B7A3C]">
-              <Flourish className="w-24 h-12" />
+              <FlourishRings className="w-75 h-12" />
             </div>
           </div>
           <p className="text-gray-500">
-            Feito com amor para nosso dia especial S2
+            Feito com amor para nosso dia especial!
           </p>
         </div>
       </footer>
