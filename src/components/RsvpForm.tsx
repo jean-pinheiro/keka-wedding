@@ -54,7 +54,7 @@ export function RsvpForm() {
   }
 
   const MIN = 1;
-  const MAX = 5;
+  const MAX = 2;
 
   const clamp = (n: number) => Math.max(MIN, Math.min(MAX, n));
   const inc = () => setTotal((t) => clamp(t + 1));
