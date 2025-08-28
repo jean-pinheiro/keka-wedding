@@ -45,10 +45,10 @@ export async function sendRsvpGuestEmail(
 
                       <div style="background:#faf6ef;border:1px solid #e5e7eb;padding:16px 18px;border-radius:12px;margin:16px 0 12px 0;">
                         <h3 style="margin:0 0 10px 0;color:#535935;font:700 16px/1.3 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;">
-                          Detalhes do Evento
+                          Detalhes da Recepção Casamento Jessica e Artur
                         </h3>
-                        <p style="margin:6px 0;"><strong>Casal:</strong> Jessica e Artur</p>
                         <p style="margin:6px 0;"><strong>Data:</strong> 03/10/2025</p>
+                        <p style="margin:6px 0;"><strong>Hora:</strong> 20:00 </p>
                         <p style="margin:6px 0;"><strong>Local:</strong><a href="https://maps.app.goo.gl/Eyf71JQ9kza7rurm6" style="text-decoration:none"> R. Tereza Cristina, 1976 - Benfica, Fortaleza - CE, 60015-141</a></p>
                       </div>
 
