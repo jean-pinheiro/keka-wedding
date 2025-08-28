@@ -5,14 +5,15 @@ import { sendRsvpGuestEmail, notifyRsvpAdmin } from "@/src/lib/email"
 
 export async function POST(req: Request) {
   try {
-    const { first_name, last_name, email } = await req.json()
+    const { first_name, last_name, email, guests_count } = await req.json()
 
     if (!first_name || !last_name || !email) {
       return NextResponse.json({ error: "Campos obrigatórios ausentes" }, { status: 400 })
     }
 
     // normalize email to lowercase
-    const normEmail = String(email).trim().toLowerCase()
+    const normEmail = String(email).trim().toLowerCase();
+    const total = guests_count ?? 1
 
     // 1) Check if this email already confirmed
     const { data: existing, error: findErr } = await supabaseAdmin
@@ -31,7 +32,7 @@ export async function POST(req: Request) {
         ok: true,
         alreadyConfirmed: true,
         rsvp: existing,
-        message: `Este e-mail já tem presença confirmada em nome de ${existing.first_name} ${existing.last_name}.`,
+        message: `Este e-mail já tem presença confirmada em nome de ${existing.first_name} ${existing.last_name}, com ${existing.guests_count} convidado(s).`,
       })
     }
 
@@ -44,6 +45,7 @@ export async function POST(req: Request) {
         email: normEmail,
         attending: true,
         name: `${first_name} ${last_name}`.trim(), // legacy field support
+        guests_count: total,
       })
       .select("*")
       .single()
@@ -70,8 +72,8 @@ export async function POST(req: Request) {
     // 3) Send emails (best-effort; don't fail the request if mailing fails)
     try {
       await Promise.all([
-        sendRsvpGuestEmail(normEmail, first_name, last_name),
-        notifyRsvpAdmin(first_name, last_name, normEmail),
+        sendRsvpGuestEmail(normEmail, first_name, last_name, total),
+        notifyRsvpAdmin(first_name, last_name, normEmail, total),
       ])
     } catch (e) {
       console.warn("RSVP email failure:", e)

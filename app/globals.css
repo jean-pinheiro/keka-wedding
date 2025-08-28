@@ -136,3 +136,16 @@ html {
 .font-ainslay {
   font-family: var(--font-ainslay), serif;
 }
+
+/* Custom number input arrows */
+.custom-number-input::-webkit-outer-spin-button,
+.custom-number-input::-webkit-inner-spin-button {
+  width: 20px;
+  height: 20px;
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+.custom-number-input[type=number] {
+  -moz-appearance: textfield; /* Firefox: hide default */
+}

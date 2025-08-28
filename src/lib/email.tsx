@@ -5,7 +5,8 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 export async function sendRsvpGuestEmail(
   email: string,
   firstName: string,
-  lastName: string
+  lastName: string,
+  guestsCount: number
 ) {
   if (!process.env.RESEND_API_KEY || !process.env.OWNER_EMAIL) {
     console.warn("Email service not configured");
@@ -49,6 +50,7 @@ export async function sendRsvpGuestEmail(
                         </h3>
                         <p style="margin:6px 0;"><strong>Data:</strong> 03/10/2025</p>
                         <p style="margin:6px 0;"><strong>Horário:</strong> 20:00 </p>
+                        <p style="margin:6px 0;"><strong>Numero de convidados:</strong> ${guestsCount}</p>
                         <p style="margin:6px 0;"><strong>Local:</strong><a href="https://maps.app.goo.gl/Eyf71JQ9kza7rurm6" style="text-decoration:none"> R. Tereza Cristina, 1976 - Benfica, Fortaleza - CE, 60015-141</a></p>
                       </div>
 
@@ -92,7 +94,8 @@ export async function sendRsvpGuestEmail(
 export async function notifyRsvpAdmin(
   firstName: string,
   lastName: string,
-  email: string
+  email: string,
+  guestsCount: number
 ) {
   if (!process.env.RESEND_API_KEY || !process.env.OWNER_EMAIL) {
     console.warn("Email service not configured");
@@ -130,6 +133,7 @@ export async function notifyRsvpAdmin(
                         </h3>
                         <p style="margin:6px 0;"><strong>Nome:</strong> ${firstName} ${lastName}</p>
                         <p style="margin:6px 0;"><strong>E-mail:</strong> <a href="mailto:${email}" style="color:#C96E2D;text-decoration:none;">${email}</a></p>
+                        <p style="margin:6px 0;"><strong>Numero total de convidados:</strong> ${guestsCount}</p>
                         <p style="margin:6px 0;"><strong>Status:</strong> Confirmado</p>
                         <p style="margin:6px 0;"><strong>Data:</strong> ${new Date().toLocaleString(
                           "pt-BR"

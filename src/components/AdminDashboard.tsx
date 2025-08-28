@@ -52,6 +52,7 @@ interface RSVP {
   attending: boolean;
   message?: string;
   created_at: string;
+  guests_count?: number; // now: total incluindo o titular
 }
 
 interface SiteSettings {
@@ -337,36 +338,80 @@ export function AdminDashboard({ initialData }: AdminDashboardProps) {
 
           <TabsContent value="rsvps" className="space-y-6">
             <h2 className="text-2xl font-semibold">Confirmações de Presença</h2>
+
+            {/* Summary: total de pessoas confirmadas (somando guests_count) */}
+            {(() => {
+              const totals = initialData.rsvps.reduce(
+                (acc: { totalPeople: number }, r: RSVP) => {
+                  if (r.attending) acc.totalPeople += r.guests_count ?? 1; // total inclui o titular
+                  return acc;
+                },
+                { totalPeople: 0 }
+              );
+
+              return (
+                <div className="rounded-lg border p-4 bg-white">
+                  <p className="text-sm text-muted-foreground">
+                    Número total de pessoas confirmadas
+                  </p>
+                  <p className="mt-1 text-3xl font-semibold">
+                    {totals.totalPeople}
+                  </p>
+                </div>
+              );
+            })()}
+
+            {/* Lista de RSVPs */}
             <div className="grid gap-4">
-              {initialData.rsvps.map((rsvp) => (
-                <Card key={rsvp.id}>
-                  <CardContent className="pt-6">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <div className="flex items-center gap-2 mb-2">
-                          <h3 className="font-semibold">{rsvp.name}</h3>
-                          <Badge
-                            variant={rsvp.attending ? "default" : "secondary"}
-                          >
-                            {rsvp.attending ? "Confirmado" : "Não Confirmado"}
-                          </Badge>
+              {initialData.rsvps.map((rsvp) => {
+                const total = rsvp.guests_count ?? 1; // total incluindo o titular
+                const companions = Math.max(0, total - 1);
+
+                return (
+                  <Card key={rsvp.id}>
+                    <CardContent className="pt-6">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <div className="flex items-center gap-2 mb-2">
+                            <h3 className="font-semibold">{rsvp.name}</h3>
+                            <Badge
+                              variant={rsvp.attending ? "default" : "secondary"}
+                            >
+                              {rsvp.attending ? "Confirmado" : "Não Confirmado"}
+                            </Badge>
+                          </div>
+
+                          {rsvp.email && (
+                            <p className="text-sm text-muted-foreground">
+                              {rsvp.email}
+                            </p>
+                          )}
+
+                          {/* Totais deste RSVP */}
+                          <div className="mt-2 text-sm">
+                            <p>
+                              Total deste Convidado: <strong>{total}</strong>{" "}
+                              <span className="text-muted-foreground">
+                                (Acompanhantes: {companions})
+                              </span>
+                            </p>
+                          </div>
+
+                          {rsvp.message && (
+                            <p className="text-sm mt-2">{rsvp.message}</p>
+                          )}
                         </div>
-                        {rsvp.email && (
-                          <p className="text-sm text-muted-foreground">
-                            {rsvp.email}
-                          </p>
-                        )}
-                        {rsvp.message && (
-                          <p className="text-sm mt-2">{rsvp.message}</p>
-                        )}
+
+                        <p className="text-xs text-muted-foreground">
+                          {new Date(rsvp.created_at).toLocaleDateString(
+                            "pt-BR"
+                          )}
+                        </p>
                       </div>
-                      <p className="text-xs text-muted-foreground">
-                        {new Date(rsvp.created_at).toLocaleDateString()}
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+                    </CardContent>
+                  </Card>
+                );
+              })}
             </div>
           </TabsContent>
 
