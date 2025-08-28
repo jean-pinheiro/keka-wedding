@@ -69,6 +69,10 @@ export async function sendRsvpGuestEmail(
                       <p style="margin:28px 0 0 0;font-size:14px;color:#535935;text-align:center;font-style:italic;">
                         Com carinho,<br> Jessica & Artur ❤️
                       </p>
+
+                      <p style="margin:16px 0 6px 0;">
+                        Este é um e-mail automático, por favor, não responda.
+                      </p>
                     </td>
                   </tr>
                 </table>
