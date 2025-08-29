@@ -91,12 +91,7 @@ export async function sendRsvpGuestEmail(
   }
 }
 
-export async function notifyRsvpAdmin(
-  firstName: string,
-  lastName: string,
-  email: string,
-  guestsCount: number
-) {
+export async function notifyRsvpAdmin(name: string, guestsCount: number) {
   if (!process.env.RESEND_API_KEY || !process.env.OWNER_EMAIL) {
     console.warn("Email service not configured");
     return;
@@ -131,8 +126,7 @@ export async function notifyRsvpAdmin(
                         <h3 style="margin:0 0 10px 0;color:#535935;font:700 16px/1.3 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;">
                           Detalhes do Convidado
                         </h3>
-                        <p style="margin:6px 0;"><strong>Nome:</strong> ${firstName} ${lastName}</p>
-                        <p style="margin:6px 0;"><strong>E-mail:</strong> <a href="mailto:${email}" style="color:#C96E2D;text-decoration:none;">${email}</a></p>
+                        <p style="margin:6px 0;"><strong>Nome:</strong> ${name}</p>
                         <p style="margin:6px 0;"><strong>Numero total de convidados:</strong> ${guestsCount}</p>
                         <p style="margin:6px 0;"><strong>Status:</strong> Confirmado</p>
                         <p style="margin:6px 0;"><strong>Data:</strong> ${new Date().toLocaleString(

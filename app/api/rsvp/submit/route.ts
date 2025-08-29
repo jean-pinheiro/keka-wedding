@@ -73,7 +73,7 @@ export async function POST(req: Request) {
     try {
       await Promise.all([
         sendRsvpGuestEmail(normEmail, first_name, last_name, total),
-        notifyRsvpAdmin(first_name, last_name, normEmail, total),
+        //notifyRsvpAdmin(first_name, last_name, normEmail, total),
       ])
     } catch (e) {
       console.warn("RSVP email failure:", e)

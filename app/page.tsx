@@ -1,7 +1,7 @@
 import { supabaseServer } from "@/src/lib/supabase-server";
 import { Carousel } from "@/src/components/Carousel";
 import { MapEmbed } from "@/src/components/MapEmbed";
-import { RsvpForm } from "@/src/components/RsvpForm";
+import { RsvpLookup } from "@/src/components/RsvpLookup";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Gift } from "lucide-react";
@@ -174,7 +174,7 @@ export default async function HomePage() {
               Por favor, confirme sua presença para que possamos nos organizar
               melhor para recebê-los em nosso dia especial.
             </p>
-            <RsvpForm />
+            <RsvpLookup />
           </div>
         </div>
       </section>
