@@ -269,12 +269,17 @@ export default async function HomePage() {
               >
                 Recepção
               </h2>
-              <p className="text-gray-600 leading-relaxed text-lg ">
+              <p className="text-gray-600 leading-relaxed text-lg text-justify ">
                 Com muita alegria, convidamos você para celebrar conosco no dia
                 03 de outubro de 2025, a partir das 20h, na R. Tereza Cristina,
                 1976 – Benfica. Queremos uma noite leve, descontraída e cheia de
-                festa, por isso sugerimos trajes casuais e confortáveis. Apenas
-                pedimos que o branco seja reservado para a noiva.
+                festa, por isso sugerimos trajes estilo esporte fino, mas que
+                você vá bem à vontade.
+              </p>
+              <p className="text-gray-600 leading-relaxed text-lg m-2">
+                {" "}
+                Apenas pedimos que{" "}
+                <strong>o branco seja reservado para a noiva.</strong>
               </p>
               {settings.location_address && (
                 <p className="text-gray-600 font-bold text-lg m-8">
@@ -310,14 +315,8 @@ export default async function HomePage() {
                 Nosso casamento será oficializado no Cartório Mucuripe. Como o
                 espaço comporta apenas 20 pessoas, este momento ficará restrito
                 aos familiares mais próximos e padrinhos. Se você gostaria de
-                participar da celebração simbólica, entre em contato (
-                <a
-                  href="mailto:jessicadasilva.jsp@gmail.com"
-                  style={{ color: "blue" }}
-                >
-                  jessicadasilva.jsp@gmail.com
-                </a>
-                ) com a noiva para verificar a disponibilidade de vagas.
+                participar da celebração simbólica, entre em contato com a noiva
+                para verificar a disponibilidade de vagas.
               </p>
             </div>
           </div>
