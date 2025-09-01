@@ -200,7 +200,8 @@ export default async function HomePage() {
               O maior presente será ter você celebrando esse dia ao nosso lado.
               ❤️ Mas, se quiser nos presentear de alguma forma, ficaremos muito
               gratos! Criamos uma lista na Amazon com algumas sugestões, mas a
-              forma que mais nos ajuda neste momento é a contribuição via Pix.
+              forma que mais nos ajuda neste momento é a contribuição via{" "}
+              <strong>Pix.</strong>
             </p>
             <p className="text-gray-600 leading-relaxed text-lg mb-8">
               De qualquer jeito, o carinho e a presença de vocês é o que
