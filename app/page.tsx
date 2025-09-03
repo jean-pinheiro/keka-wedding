@@ -200,8 +200,12 @@ export default async function HomePage() {
               O maior presente será ter você celebrando esse dia ao nosso lado.
               ❤️ Mas, se quiser nos presentear de alguma forma, ficaremos muito
               gratos! Criamos uma lista na Amazon com algumas sugestões, mas a
-              forma que mais nos ajuda neste momento é a contribuição via{" "}
-              <strong>Pix.</strong>
+              forma que <strong>mais nos ajuda</strong> neste momento é a{" "}
+              <strong>
+                <a href="settings.pix_link_url" style={{ color: "#535935" }}>
+                  contribuição via Pix.
+                </a>
+              </strong>
             </p>
             <p className="text-gray-600 leading-relaxed text-lg mb-8">
               De qualquer jeito, o carinho e a presença de vocês é o que
@@ -209,34 +213,36 @@ export default async function HomePage() {
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-6">
-              {/* Amazon list */}
-              {!!settings.amazon_list_url && (
-                <Link
-                  href={settings.amazon_list_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group w-64 sm:w-72"
-                >
-                  <div className="flex items-center justify-center gap-3 rounded-xl bg-[#C96E2D] text-white py-4 px-6 shadow-md transition-all duration-200 hover:scale-[1.03] hover:shadow-lg">
-                    <Gift className="h-6 w-6 transition-transform group-hover:rotate-6" />
-                    <span className="font-medium text-lg">
-                      Abrir lista na Amazon
-                    </span>
-                  </div>
-                </Link>
-              )}
-
               {/* Pix link */}
               {!!settings.pix_link_url && (
                 <Link
                   href={settings.pix_link_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group w-64 sm:w-72"
+                  className="group w-80 sm:w-80"
                 >
                   <div className="flex items-center justify-center gap-3 rounded-xl bg-white border-2 border-[#535935] text-[#535935] py-4 px-6 shadow-sm transition-all duration-200 hover:scale-[1.03] hover:bg-[#535935] hover:text-white">
-                    <span className="font-medium text-lg">
+                    <span className="font-medium text-xl">
                       Contribuir via Pix
+                    </span>
+                  </div>
+                </Link>
+              )}
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-2">
+              {/* Amazon list */}
+              {!!settings.amazon_list_url && (
+                <Link
+                  href={settings.amazon_list_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group"
+                >
+                  <div className="flex items-center justify-center gap-3 rounded-xl bg-[#C96E2D] text-white py-4 px-6 shadow-md transition-all duration-200 hover:scale-[1.03] hover:shadow-lg">
+                    <Gift className="h-6 w-6 transition-transform group-hover:rotate-6" />
+                    <span className="font-medium text-s">
+                      Abrir lista na Amazon
                     </span>
                   </div>
                 </Link>
